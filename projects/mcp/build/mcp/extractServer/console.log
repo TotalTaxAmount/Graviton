@@ -1,0 +1,13 @@
+JVM:         /usr/lib/jvm/java-17-openjdk/bin/java
+JVM Args:    
+Run Args:    "--task", "bundler_extract", "--input", "/home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/downloadServer/server.jar", "--output", "/home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/extractServer/output.jar", "--jar-only"
+Classpath:   /home/totaltaxamount/.gradle/caches/forge_gradle/maven_downloader/net/minecraftforge/installertools/1.3.0/installertools-1.3.0-fatjar.jar
+Working Dir: /home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/extractServer
+Main Class:  net.minecraftforge.installertools.ConsoleTool
+Task: BUNDLER_EXTRACT
+Input:   /home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/downloadServer/server.jar
+Output:  /home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/extractServer/output.jar
+All:     false
+JarOnly: true
+Libs:    false
+Extracted: versions/1.19.4/server-1.19.4.jar

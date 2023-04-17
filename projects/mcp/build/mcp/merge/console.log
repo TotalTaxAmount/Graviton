@@ -1,0 +1,6 @@
+JVM:         /usr/lib/jvm/java-17-openjdk/bin/java
+JVM Args:    
+Run Args:    "--client", "/home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/stripClient/output.jar", "--server", "/home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/stripServer/output.jar", "--ann", "1.19.4", "--output", "/home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/merge/output.jar", "--inject", "false"
+Classpath:   /home/totaltaxamount/.gradle/caches/forge_gradle/maven_downloader/net/minecraftforge/mergetool/1.1.5/mergetool-1.1.5-fatjar.jar
+Working Dir: /home/totaltaxamount/Documents/Projects/Intellij/Partical/projects/mcp/build/mcp/merge
+Main Class:  net.minecraftforge.mergetool.ConsoleMerger
