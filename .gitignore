@@ -1,7 +1,13 @@
 /.idea/
 /gradle/
 /.gradle/
-/run/
 /runserver/
 /projects/
 /build/
+/run/assets
+/run/crash-reports
+/run/logs
+/run/resourcepacks
+/run/saves
+/run/options.txt
+/run/usercache.json
