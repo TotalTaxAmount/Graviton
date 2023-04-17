@@ -1,0 +1,142 @@
+---- Minecraft Crash Report ----
+// My bad.
+
+Time: 2023-04-17 14:01:38
+Description: Ticking entity
+
+java.lang.ArrayIndexOutOfBoundsException: Index -2 out of bounds for length 2
+	at it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap.get(Object2ObjectArrayMap.java:321)
+	at net.minecraft.world.entity.ai.attributes.AttributeInstance.getModifier(AttributeInstance.java:62)
+	at net.minecraft.world.entity.LivingEntity.removeFrost(LivingEntity.java:473)
+	at net.minecraft.world.entity.LivingEntity.aiStep(LivingEntity.java:2529)
+	at net.minecraft.world.entity.player.Player.aiStep(Player.java:498)
+	at net.minecraft.client.player.LocalPlayer.aiStep(LocalPlayer.java:765)
+	at net.minecraft.world.entity.LivingEntity.tick(LivingEntity.java:2223)
+	at net.minecraft.world.entity.player.Player.tick(Player.java:237)
+	at net.minecraft.client.player.AbstractClientPlayer.tick(AbstractClientPlayer.java:70)
+	at net.minecraft.client.player.LocalPlayer.tick(LocalPlayer.java:186)
+	at net.minecraft.client.multiplayer.ClientLevel.tickNonPassenger(ClientLevel.java:264)
+	at net.minecraft.world.level.Level.guardEntityTick(Level.java:434)
+	at net.minecraft.client.multiplayer.ClientLevel.lambda$tickEntities$4(ClientLevel.java:247)
+	at net.minecraft.world.level.entity.EntityTickList.forEach(EntityTickList.java:53)
+	at net.minecraft.client.multiplayer.ClientLevel.tickEntities(ClientLevel.java:245)
+	at net.minecraft.client.Minecraft.tick(Minecraft.java:1769)
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1093)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:714)
+	at net.minecraft.client.main.Main.main(Main.java:208)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap.get(Object2ObjectArrayMap.java:321)
+	at net.minecraft.world.entity.ai.attributes.AttributeInstance.getModifier(AttributeInstance.java:62)
+	at net.minecraft.world.entity.LivingEntity.removeFrost(LivingEntity.java:473)
+	at net.minecraft.world.entity.LivingEntity.aiStep(LivingEntity.java:2529)
+	at net.minecraft.world.entity.player.Player.aiStep(Player.java:498)
+	at net.minecraft.client.player.LocalPlayer.aiStep(LocalPlayer.java:765)
+	at net.minecraft.world.entity.LivingEntity.tick(LivingEntity.java:2223)
+	at net.minecraft.world.entity.player.Player.tick(Player.java:237)
+	at net.minecraft.client.player.AbstractClientPlayer.tick(AbstractClientPlayer.java:70)
+	at net.minecraft.client.player.LocalPlayer.tick(LocalPlayer.java:186)
+	at net.minecraft.client.multiplayer.ClientLevel.tickNonPassenger(ClientLevel.java:264)
+	at net.minecraft.world.level.Level.guardEntityTick(Level.java:434)
+	at net.minecraft.client.multiplayer.ClientLevel.lambda$tickEntities$4(ClientLevel.java:247)
+	at net.minecraft.world.level.entity.EntityTickList.forEach(EntityTickList.java:53)
+	at net.minecraft.client.multiplayer.ClientLevel.tickEntities(ClientLevel.java:245)
+
+-- Entity being ticked --
+Details:
+	Entity Type: minecraft:player (net.minecraft.client.player.LocalPlayer)
+	Entity ID: 147
+	Entity Name: Player48
+	Entity's Exact location: 10.59, 96.00, 33.49
+	Entity's Block location: World: (10,96,33), Section: (at 10,0,1 in 0,6,2; chunk contains blocks 0,-64,32 to 15,319,47), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,-64,0 to 511,319,511)
+	Entity's Momentum: 0.14, -0.08, -0.05
+	Entity's Passengers: []
+	Entity's Vehicle: null
+Stacktrace:
+	at net.minecraft.world.level.Level.guardEntityTick(Level.java:434)
+	at net.minecraft.client.multiplayer.ClientLevel.lambda$tickEntities$4(ClientLevel.java:247)
+	at net.minecraft.world.level.entity.EntityTickList.forEach(EntityTickList.java:53)
+	at net.minecraft.client.multiplayer.ClientLevel.tickEntities(ClientLevel.java:245)
+	at net.minecraft.client.Minecraft.tick(Minecraft.java:1769)
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1093)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:714)
+	at net.minecraft.client.main.Main.main(Main.java:208)
+
+-- Affected level --
+Details:
+	All players: 1 total; [LocalPlayer['Player48'/147, l='ClientLevel', x=10.59, y=96.00, z=33.49]]
+	Chunk stats: 961, 612
+	Level dimension: minecraft:overworld
+	Level spawn location: World: (-16,103,-48), Section: (at 0,7,0 in -1,6,-3; chunk contains blocks -16,-64,-48 to -1,319,-33), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,-64,-512 to -1,319,-1)
+	Level time: 3051 game time, 3051 day time
+	Server brand: vanilla
+	Server type: Integrated singleplayer server
+Stacktrace:
+	at net.minecraft.client.multiplayer.ClientLevel.fillReportDetails(ClientLevel.java:443)
+	at net.minecraft.client.Minecraft.fillReport(Minecraft.java:2267)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:731)
+	at net.minecraft.client.main.Main.main(Main.java:208)
+
+-- Last reload --
+Details:
+	Reload number: 1
+	Reload reason: initial
+	Finished: Yes
+	Packs: vanilla
+
+-- System Details --
+Details:
+	Minecraft Version: 1.19.4
+	Minecraft Version ID: 1.19.4
+	Operating System: Linux (amd64) version 6.2.11-arch1-1
+	Java Version: 17.0.6, N/A
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 906144056 bytes (864 MiB) / 1969225728 bytes (1878 MiB) up to 4037017600 bytes (3850 MiB)
+	CPUs: 16
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 7 5800H with Radeon Graphics
+	Identifier: AuthenticAMD Family 25 Model 80 Stepping 0
+	Microarchitecture: Zen 3
+	Frequency (GHz): -0.00
+	Number of physical packages: 1
+	Number of physical CPUs: 8
+	Number of logical CPUs: 16
+	Graphics card #0 name: GA107M [GeForce RTX 3050 Ti Mobile]
+	Graphics card #0 vendor: NVIDIA Corporation (0x10de)
+	Graphics card #0 VRAM (MB): 4128.00
+	Graphics card #0 deviceId: 0x25a0
+	Graphics card #0 versionInfo: unknown
+	Graphics card #1 name: Cezanne [Radeon Vega Series / Radeon Vega Mobile Series]
+	Graphics card #1 vendor: Advanced Micro Devices, Inc. [AMD/ATI] (0x1002)
+	Graphics card #1 VRAM (MB): 258.00
+	Graphics card #1 deviceId: 0x1638
+	Graphics card #1 versionInfo: unknown
+	Virtual memory max (MB): 24631.89
+	Virtual memory used (MB): 11155.56
+	Swap memory total (MB): 16934.39
+	Swap memory used (MB): 0.00
+	JVM Flags: 0 total; 
+	Launched Version: 1.19.4
+	Backend library: LWJGL version 3.3.1 build 7
+	Backend API: NVIDIA GeForce RTX 3050 Ti Laptop GPU/PCIe/SSE2 GL version 3.2.0 NVIDIA 530.41.03, NVIDIA Corporation
+	Window size: 854x480
+	GL Caps: Using framebuffer using OpenGL 3.2
+	GL debug messages: 
+	Using VBOs: Yes
+	Is Modded: Very likely; Client jar signature invalidated; Server jar signature invalidated
+	Type: Integrated Server (map_client.txt)
+	Graphics mode: fancy
+	Resource Packs: 
+	Current Language: en_us
+	CPU: 16x AMD Ryzen 7 5800H with Radeon Graphics
+	Server Running: true
+	Player Count: 1 / 8; [ServerPlayer['Player48'/147, l='ServerLevel[New World]', x=10.32, y=96.00, z=33.58]]
+	Data Packs: vanilla
+	Enabled Feature Flags: minecraft:vanilla
+	World Generation: Stable
