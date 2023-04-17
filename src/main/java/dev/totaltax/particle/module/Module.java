@@ -1,5 +1,7 @@
 package dev.totaltax.particle.module;
 
+import dev.totaltax.particle.Particle;
+import dev.totaltax.particle.event.EventManager;
 import net.minecraft.client.Minecraft;
 
 public class Module {
@@ -21,5 +23,58 @@ public class Module {
         this.key = key;
         this.category = category;
         this.enabled = false;
+    }
+
+    public void onEnable() {
+        Particle.getInstance().getEventManager().register(this);
+    }
+
+    public void onDisable() {
+        EventManager.unregister(this);
+    }
+
+    public void onToggle() {
+        // TODO: Add sounds
+    }
+
+    public void setEnabled(boolean e) {
+        this.enabled = e;
+        if (this.enabled)
+            onEnable();
+        else
+            onDisable();
+    }
+
+    public void toggle() {
+        this.enabled = !this.enabled;
+        onToggle();
+        if (this.enabled)
+            onEnable();
+        else
+            onDisable();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setDisplayName(String name) {
+        this.displayName = name;
     }
 }

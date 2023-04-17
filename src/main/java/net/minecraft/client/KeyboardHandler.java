@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Locale;
 import javax.annotation.Nullable;
+
+import dev.totaltax.particle.event.impl.EventKey;
 import net.minecraft.ChatFormatting;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -297,8 +299,8 @@ public class KeyboardHandler {
       this.setClipboard(s);
    }
 
-   public void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_) {
-      if (p_90894_ == this.minecraft.getWindow().getWindow()) {
+   public void keyPress(long window, int key, int p_90896_, int direction, int p_90898_) {
+      if (window == this.minecraft.getWindow().getWindow()) {
          if (this.debugCrashKeyTime > 0L) {
             if (!InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), 67) || !InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), 292)) {
                this.debugCrashKeyTime = -1L;
@@ -310,9 +312,17 @@ public class KeyboardHandler {
             this.debugCrashKeyReportedCount = 0L;
          }
 
+         EventKey eventKey = new EventKey(key, direction);
+         if (eventKey.isCancelled())
+            return;
+         eventKey.call();
+
+         //System.out.println("window: " + window + " dir: " + direction +" key: " + key + " p_90896: " + p_90896_ + " other p: " + p_90898_);
+
+
          Screen screen = this.minecraft.screen;
          if (screen != null) {
-            switch (p_90895_) {
+            switch (eventKey.getKey()) {
                case 258:
                   this.minecraft.setLastInputType(InputType.KEYBOARD_TAB);
                case 259:
@@ -328,19 +338,20 @@ public class KeyboardHandler {
             }
          }
 
-         if (p_90897_ == 1 && (!(this.minecraft.screen instanceof KeyBindsScreen) || ((KeyBindsScreen)screen).lastKeySelection <= Util.getMillis() - 20L)) {
-            if (this.minecraft.options.keyFullscreen.matches(p_90895_, p_90896_)) {
+         if (direction == 1 && (!(this.minecraft.screen instanceof KeyBindsScreen) || ((KeyBindsScreen)screen).lastKeySelection <= Util.getMillis() - 20L)) {
+            if (this.minecraft.options.keyFullscreen.matches(eventKey.getKey(), p_90896_)) {
                this.minecraft.getWindow().toggleFullScreen();
                this.minecraft.options.fullscreen().set(this.minecraft.getWindow().isFullscreen());
                return;
             }
 
-            if (this.minecraft.options.keyScreenshot.matches(p_90895_, p_90896_)) {
+            if (this.minecraft.options.keyScreenshot.matches(eventKey.getKey(), p_90896_)) {
                if (Screen.hasControlDown()) {
                }
 
                Screenshot.grab(this.minecraft.gameDirectory, this.minecraft.getMainRenderTarget(), (p_90917_) -> {
                   this.minecraft.execute(() -> {
+                     // TODO: Remember this for adding shit to chat in future
                      this.minecraft.gui.getChat().addMessage(p_90917_);
                   });
                });
@@ -350,7 +361,7 @@ public class KeyboardHandler {
 
          if (this.minecraft.getNarrator().isActive()) {
             boolean flag = screen == null || !(screen.getFocused() instanceof EditBox) || !((EditBox)screen.getFocused()).canConsumeInput();
-            if (p_90897_ != 0 && p_90895_ == 66 && Screen.hasControlDown() && flag) {
+            if (direction != 0 && eventKey.getKey() == 66 && Screen.hasControlDown() && flag) {
                boolean flag1 = this.minecraft.options.narrator().get() == NarratorStatus.OFF;
                this.minecraft.options.narrator().set(NarratorStatus.byId(this.minecraft.options.narrator().get().getId() + 1));
                if (screen instanceof SimpleOptionsSubScreen) {
@@ -366,13 +377,13 @@ public class KeyboardHandler {
          if (screen != null) {
             boolean[] aboolean = new boolean[]{false};
             Screen.wrapScreenError(() -> {
-               if (p_90897_ != 1 && p_90897_ != 2) {
-                  if (p_90897_ == 0) {
-                     aboolean[0] = screen.keyReleased(p_90895_, p_90896_, p_90898_);
+               if (direction != 1 && direction != 2) {
+                  if (direction == 0) {
+                     aboolean[0] = screen.keyReleased(eventKey.getKey(), p_90896_, p_90898_);
                   }
                } else {
                   screen.afterKeyboardAction();
-                  aboolean[0] = screen.keyPressed(p_90895_, p_90896_, p_90898_);
+                  aboolean[0] = screen.keyPressed(eventKey.getKey(), p_90896_, p_90898_);
                }
 
             }, "keyPressed event handler", screen.getClass().getCanonicalName());
@@ -382,10 +393,10 @@ public class KeyboardHandler {
          }
 
          if (this.minecraft.screen == null || this.minecraft.screen.passEvents) {
-            InputConstants.Key inputconstants$key = InputConstants.getKey(p_90895_, p_90896_);
-            if (p_90897_ == 0) {
+            InputConstants.Key inputconstants$key = InputConstants.getKey(eventKey.getKey(), p_90896_);
+            if (direction == 0) {
                KeyMapping.set(inputconstants$key, false);
-               if (p_90895_ == 292) {
+               if (eventKey.getKey() == 292) {
                   if (this.handledDebugKey) {
                      this.handledDebugKey = false;
                   } else {
@@ -395,20 +406,20 @@ public class KeyboardHandler {
                   }
                }
             } else {
-               if (p_90895_ == 293 && this.minecraft.gameRenderer != null) {
+               if (eventKey.getKey() == 293 && this.minecraft.gameRenderer != null) {
                   this.minecraft.gameRenderer.togglePostEffect();
                }
 
                boolean flag3 = false;
                if (this.minecraft.screen == null) {
-                  if (p_90895_ == 256) {
+                  if (eventKey.getKey() == 256) {
                      boolean flag2 = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), 292);
                      this.minecraft.pauseGame(flag2);
                   }
 
-                  flag3 = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), 292) && this.handleDebugKeys(p_90895_);
+                  flag3 = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), 292) && this.handleDebugKeys(eventKey.getKey());
                   this.handledDebugKey |= flag3;
-                  if (p_90895_ == 290) {
+                  if (eventKey.getKey() == 290) {
                      this.minecraft.options.hideGui = !this.minecraft.options.hideGui;
                   }
                }
@@ -420,8 +431,8 @@ public class KeyboardHandler {
                   KeyMapping.click(inputconstants$key);
                }
 
-               if (this.minecraft.options.renderDebugCharts && p_90895_ >= 48 && p_90895_ <= 57) {
-                  this.minecraft.debugFpsMeterKeyPress(p_90895_ - 48);
+               if (this.minecraft.options.renderDebugCharts && eventKey.getKey() >= 48 && eventKey.getKey() <= 57) {
+                  this.minecraft.debugFpsMeterKeyPress(eventKey.getKey() - 48);
                }
             }
          }

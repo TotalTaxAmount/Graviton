@@ -13,6 +13,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
+
+import dev.totaltax.particle.event.impl.EventUpdate;
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -233,6 +235,12 @@ public abstract class Player extends LivingEntity {
 
       this.updateIsUnderwater();
       super.tick();
+
+      EventUpdate event = new EventUpdate();
+      if (event.isCancelled())
+         return;
+      event.call();
+
       if (!this.level.isClientSide && this.containerMenu != null && !this.containerMenu.stillValid(this)) {
          this.closeContainer();
          this.containerMenu = this.inventoryMenu;
