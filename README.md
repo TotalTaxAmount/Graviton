@@ -1,4 +1,4 @@
-### Partical
+### Graviton Client
 
 ---
-Epic client
+Learn how to spell particle next time!
