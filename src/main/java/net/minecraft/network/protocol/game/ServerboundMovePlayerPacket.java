@@ -9,7 +9,7 @@ public abstract class ServerboundMovePlayerPacket implements Packet<ServerGamePa
    protected final double z;
    protected final float yRot;
    protected final float xRot;
-   protected final boolean onGround;
+   public boolean onGround;
    protected final boolean hasPos;
    protected final boolean hasRot;
 
