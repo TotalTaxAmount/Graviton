@@ -3,6 +3,8 @@ package net.minecraft.network;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mojang.logging.LogUtils;
+import dev.totaltax.particle.event.impl.EventReceivePacket;
+import dev.totaltax.particle.event.impl.EventSendPacket;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -143,15 +145,21 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
       }
    }
 
-   protected void channelRead0(ChannelHandlerContext p_129487_, Packet<?> p_129488_) {
+   protected void channelRead0(ChannelHandlerContext p_129487_, Packet<?> packet) {
       if (this.channel.isOpen()) {
+
+         EventReceivePacket eventReceivePacket = new EventReceivePacket(packet);
+         if (eventReceivePacket.isCancelled())
+            return;
+         eventReceivePacket.call();
+
          try {
-            genericsFtw(p_129488_, this.packetListener);
+            genericsFtw(eventReceivePacket.getPacket(), this.packetListener);
          } catch (RunningOnDifferentThreadException runningondifferentthreadexception) {
          } catch (RejectedExecutionException rejectedexecutionexception) {
             this.disconnect(Component.translatable("multiplayer.disconnect.server_shutdown"));
          } catch (ClassCastException classcastexception) {
-            LOGGER.error("Received {} that couldn't be processed", p_129488_.getClass(), classcastexception);
+            LOGGER.error("Received {} that couldn't be processed", eventReceivePacket.getPacket().getClass(), classcastexception);
             this.disconnect(Component.translatable("multiplayer.disconnect.invalid_packet"));
          }
 
@@ -164,32 +172,40 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
       p_129518_.handle((T)p_129519_);
    }
 
-   public void setListener(PacketListener p_129506_) {
-      Validate.notNull(p_129506_, "packetListener");
-      this.packetListener = p_129506_;
+   public void setListener(PacketListener listener) {
+      Validate.notNull(listener, "packetListener");
+      this.packetListener = listener;
    }
 
    public void send(Packet<?> p_129513_) {
       this.send(p_129513_, (PacketSendListener)null);
    }
 
-   public void send(Packet<?> p_243248_, @Nullable PacketSendListener p_243316_) {
+   public void send(Packet<?> packet, @Nullable PacketSendListener p_243316_) {
+
+      EventSendPacket eventSendPacket = new EventSendPacket(packet);
+      if (eventSendPacket.isCancelled())
+         return;
+      eventSendPacket.call();
+
       if (this.isConnected()) {
          this.flushQueue();
-         this.sendPacket(p_243248_, p_243316_);
+         this.sendPacket(eventSendPacket.getPacket(), p_243316_);
       } else {
-         this.queue.add(new Connection.PacketHolder(p_243248_, p_243316_));
+         this.queue.add(new Connection.PacketHolder(eventSendPacket.getPacket(), p_243316_));
       }
 
    }
 
-   private void sendPacket(Packet<?> p_129521_, @Nullable PacketSendListener p_243246_) {
-      ConnectionProtocol connectionprotocol = ConnectionProtocol.getProtocolForPacket(p_129521_);
+   private void sendPacket(Packet<?> packet, @Nullable PacketSendListener p_243246_) {
+
+
+      ConnectionProtocol connectionprotocol = ConnectionProtocol.getProtocolForPacket(packet);
       ConnectionProtocol connectionprotocol1 = this.getCurrentProtocol();
       ++this.sentPackets;
       if (connectionprotocol1 != connectionprotocol) {
          if (connectionprotocol == null) {
-            throw new IllegalStateException("Encountered packet without set protocol: " + p_129521_);
+            throw new IllegalStateException("Encountered packet without set protocol: " + packet);
          }
 
          LOGGER.debug("Disabled auto read");
@@ -197,10 +213,10 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
       }
 
       if (this.channel.eventLoop().inEventLoop()) {
-         this.doSendPacket(p_129521_, p_243246_, connectionprotocol, connectionprotocol1);
+         this.doSendPacket(packet, p_243246_, connectionprotocol, connectionprotocol1);
       } else {
          this.channel.eventLoop().execute(() -> {
-            this.doSendPacket(p_129521_, p_243246_, connectionprotocol, connectionprotocol1);
+            this.doSendPacket(packet, p_243246_, connectionprotocol, connectionprotocol1);
          });
       }
 
