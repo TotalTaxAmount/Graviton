@@ -127,9 +127,9 @@ public class ItemFrame extends HangingEntity {
       }
    }
 
-   public void move(MoverType p_31781_, Vec3 p_31782_) {
+   public void move(MoverType moverType, Vec3 motionVec) {
       if (!this.fixed) {
-         super.move(p_31781_, p_31782_);
+         super.move(moverType, motionVec);
       }
 
    }

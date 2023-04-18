@@ -175,13 +175,13 @@ public class ChatComponent extends GuiComponent {
 
    }
 
-   public void addMessage(Component p_93786_) {
-      this.addMessage(p_93786_, (MessageSignature)null, this.minecraft.isSingleplayer() ? GuiMessageTag.systemSinglePlayer() : GuiMessageTag.system());
+   public void addMessage(Component chat) {
+      this.addMessage(chat, (MessageSignature)null, this.minecraft.isSingleplayer() ? GuiMessageTag.systemSinglePlayer() : GuiMessageTag.system());
    }
 
-   public void addMessage(Component p_241484_, @Nullable MessageSignature p_241323_, @Nullable GuiMessageTag p_241297_) {
-      this.logChatMessage(p_241484_, p_241297_);
-      this.addMessage(p_241484_, p_241323_, this.minecraft.gui.getGuiTicks(), p_241297_, false);
+   public void addMessage(Component chat, @Nullable MessageSignature sig, @Nullable GuiMessageTag tag) {
+      this.logChatMessage(chat, tag);
+      this.addMessage(chat, sig, this.minecraft.gui.getGuiTicks(), tag, false);
    }
 
    private void logChatMessage(Component p_242919_, @Nullable GuiMessageTag p_242840_) {
@@ -195,13 +195,13 @@ public class ChatComponent extends GuiComponent {
 
    }
 
-   private void addMessage(Component p_240562_, @Nullable MessageSignature p_241566_, int p_240583_, @Nullable GuiMessageTag p_240624_, boolean p_240558_) {
+   private void addMessage(Component chat, @Nullable MessageSignature sig, int time, @Nullable GuiMessageTag tag, boolean clear) {
       int i = Mth.floor((double)this.getWidth() / this.getScale());
-      if (p_240624_ != null && p_240624_.icon() != null) {
-         i -= p_240624_.icon().width + 4 + 2;
+      if (tag != null && tag.icon() != null) {
+         i -= tag.icon().width + 4 + 2;
       }
 
-      List<FormattedCharSequence> list = ComponentRenderUtils.wrapComponents(p_240562_, i, this.minecraft.font);
+      List<FormattedCharSequence> list = ComponentRenderUtils.wrapComponents(chat, i, this.minecraft.font);
       boolean flag = this.isChatFocused();
 
       for(int j = 0; j < list.size(); ++j) {
@@ -212,15 +212,15 @@ public class ChatComponent extends GuiComponent {
          }
 
          boolean flag1 = j == list.size() - 1;
-         this.trimmedMessages.add(0, new GuiMessage.Line(p_240583_, formattedcharsequence, p_240624_, flag1));
+         this.trimmedMessages.add(0, new GuiMessage.Line(time, formattedcharsequence, tag, flag1));
       }
 
       while(this.trimmedMessages.size() > 100) {
          this.trimmedMessages.remove(this.trimmedMessages.size() - 1);
       }
 
-      if (!p_240558_) {
-         this.allMessages.add(0, new GuiMessage(p_240583_, p_240562_, p_241566_, p_240624_));
+      if (!clear) {
+         this.allMessages.add(0, new GuiMessage(time, chat, sig, tag));
 
          while(this.allMessages.size() > 100) {
             this.allMessages.remove(this.allMessages.size() - 1);

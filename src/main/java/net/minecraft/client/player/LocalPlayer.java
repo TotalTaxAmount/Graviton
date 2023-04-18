@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 import javax.annotation.Nullable;
+
+import dev.totaltax.particle.event.impl.EventPreMotion;
+import dev.totaltax.particle.util.ChatUtil;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
@@ -223,41 +226,46 @@ public class LocalPlayer extends AbstractClientPlayer {
       }
 
       if (this.isControlledCamera()) {
-         double d4 = this.getX() - this.xLast;
-         double d0 = this.getY() - this.yLast1;
-         double d1 = this.getZ() - this.zLast;
-         double d2 = (double)(this.getYRot() - this.yRotLast);
-         double d3 = (double)(this.getXRot() - this.xRotLast);
+         EventPreMotion eventPreMotion = new EventPreMotion(this.getYRot(), this.getXRot(), this.onGround ,this.getX(), this.getY(), this.getZ());
+         if (eventPreMotion.isCancelled())
+            return;
+         eventPreMotion.call();
+
+         double d4 = eventPreMotion.getX() - this.xLast;
+         double d0 = eventPreMotion.getY() - this.yLast1;
+         double d1 = eventPreMotion.getZ() - this.zLast;
+         double d2 = (double)(eventPreMotion.getYaw() - this.yRotLast);
+         double d3 = (double)(eventPreMotion.getPitch() - this.xRotLast);
          ++this.positionReminder;
          boolean flag1 = Mth.lengthSquared(d4, d0, d1) > Mth.square(2.0E-4D) || this.positionReminder >= 20;
          boolean flag2 = d2 != 0.0D || d3 != 0.0D;
          if (this.isPassenger()) {
             Vec3 vec3 = this.getDeltaMovement();
-            this.connection.send(new ServerboundMovePlayerPacket.PosRot(vec3.x, -999.0D, vec3.z, this.getYRot(), this.getXRot(), this.onGround));
+            this.connection.send(new ServerboundMovePlayerPacket.PosRot(vec3.x, -999.0D, vec3.z, eventPreMotion.getYaw(), eventPreMotion.getPitch(), eventPreMotion.isOnGround()));
             flag1 = false;
          } else if (flag1 && flag2) {
-            this.connection.send(new ServerboundMovePlayerPacket.PosRot(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot(), this.onGround));
+            this.connection.send(new ServerboundMovePlayerPacket.PosRot(eventPreMotion.getX(), eventPreMotion.getY(), eventPreMotion.getZ(), eventPreMotion.getYaw(), eventPreMotion.getPitch(), eventPreMotion.isOnGround()));
          } else if (flag1) {
-            this.connection.send(new ServerboundMovePlayerPacket.Pos(this.getX(), this.getY(), this.getZ(), this.onGround));
+            this.connection.send(new ServerboundMovePlayerPacket.Pos(eventPreMotion.getX(), eventPreMotion.getY(), eventPreMotion.getZ(), eventPreMotion.isOnGround()));
          } else if (flag2) {
-            this.connection.send(new ServerboundMovePlayerPacket.Rot(this.getYRot(), this.getXRot(), this.onGround));
+            this.connection.send(new ServerboundMovePlayerPacket.Rot(eventPreMotion.getYaw(), eventPreMotion.getPitch(), eventPreMotion.isOnGround()));
          } else if (this.lastOnGround != this.onGround) {
-            this.connection.send(new ServerboundMovePlayerPacket.StatusOnly(this.onGround));
+            this.connection.send(new ServerboundMovePlayerPacket.StatusOnly(eventPreMotion.isOnGround()));
          }
 
          if (flag1) {
-            this.xLast = this.getX();
-            this.yLast1 = this.getY();
-            this.zLast = this.getZ();
+            this.xLast = eventPreMotion.getX();
+            this.yLast1 = eventPreMotion.getY();
+            this.zLast = eventPreMotion.getZ();
             this.positionReminder = 0;
          }
 
          if (flag2) {
-            this.yRotLast = this.getYRot();
-            this.xRotLast = this.getXRot();
+            this.yRotLast = eventPreMotion.getYaw();
+            this.xRotLast = eventPreMotion.getPitch();
          }
 
-         this.lastOnGround = this.onGround;
+         this.lastOnGround = eventPreMotion.isOnGround();
          this.autoJumpEnabled = this.minecraft.options.autoJump().get();
       }
 
@@ -842,10 +850,10 @@ public class LocalPlayer extends AbstractClientPlayer {
       return super.removeEffectNoUpdate(p_108720_);
    }
 
-   public void move(MoverType p_108670_, Vec3 p_108671_) {
+   public void move(MoverType moverType, Vec3 motionVec) {
       double d0 = this.getX();
       double d1 = this.getZ();
-      super.move(p_108670_, p_108671_);
+      super.move(moverType, motionVec);
       this.updateAutoJump((float)(this.getX() - d0), (float)(this.getZ() - d1));
    }
 

@@ -553,27 +553,27 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       return this.onGround;
    }
 
-   public void move(MoverType p_19973_, Vec3 p_19974_) {
+   public void move(MoverType moverType, Vec3 motionVec) {
       if (this.noPhysics) {
-         this.setPos(this.getX() + p_19974_.x, this.getY() + p_19974_.y, this.getZ() + p_19974_.z);
+         this.setPos(this.getX() + motionVec.x, this.getY() + motionVec.y, this.getZ() + motionVec.z);
       } else {
          this.wasOnFire = this.isOnFire();
-         if (p_19973_ == MoverType.PISTON) {
-            p_19974_ = this.limitPistonMovement(p_19974_);
-            if (p_19974_.equals(Vec3.ZERO)) {
+         if (moverType == MoverType.PISTON) {
+            motionVec = this.limitPistonMovement(motionVec);
+            if (motionVec.equals(Vec3.ZERO)) {
                return;
             }
          }
 
          this.level.getProfiler().push("move");
          if (this.stuckSpeedMultiplier.lengthSqr() > 1.0E-7D) {
-            p_19974_ = p_19974_.multiply(this.stuckSpeedMultiplier);
+            motionVec = motionVec.multiply(this.stuckSpeedMultiplier);
             this.stuckSpeedMultiplier = Vec3.ZERO;
             this.setDeltaMovement(Vec3.ZERO);
          }
 
-         p_19974_ = this.maybeBackOffFromEdge(p_19974_, p_19973_);
-         Vec3 vec3 = this.collide(p_19974_);
+         motionVec = this.maybeBackOffFromEdge(motionVec, moverType);
+         Vec3 vec3 = this.collide(motionVec);
          double d0 = vec3.lengthSqr();
          if (d0 > 1.0E-7D) {
             if (this.fallDistance != 0.0F && d0 >= 1.0D) {
@@ -588,18 +588,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
 
          this.level.getProfiler().pop();
          this.level.getProfiler().push("rest");
-         boolean flag2 = !Mth.equal(p_19974_.x, vec3.x);
-         boolean flag = !Mth.equal(p_19974_.z, vec3.z);
+         boolean flag2 = !Mth.equal(motionVec.x, vec3.x);
+         boolean flag = !Mth.equal(motionVec.z, vec3.z);
          this.horizontalCollision = flag2 || flag;
-         this.verticalCollision = p_19974_.y != vec3.y;
-         this.verticalCollisionBelow = this.verticalCollision && p_19974_.y < 0.0D;
+         this.verticalCollision = motionVec.y != vec3.y;
+         this.verticalCollisionBelow = this.verticalCollision && motionVec.y < 0.0D;
          if (this.horizontalCollision) {
             this.minorHorizontalCollision = this.isHorizontalCollisionMinor(vec3);
          } else {
             this.minorHorizontalCollision = false;
          }
 
-         this.onGround = this.verticalCollision && p_19974_.y < 0.0D;
+         this.onGround = this.verticalCollision && motionVec.y < 0.0D;
          BlockPos blockpos = this.getOnPosLegacy();
          BlockState blockstate = this.level.getBlockState(blockpos);
          this.checkFallDamage(vec3.y, this.onGround, blockstate, blockpos);
@@ -612,7 +612,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
             }
 
             Block block = blockstate.getBlock();
-            if (p_19974_.y != vec3.y) {
+            if (motionVec.y != vec3.y) {
                block.updateEntityAfterFallOn(this.level, this);
             }
 
@@ -653,7 +653,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
                         this.playStepSound(blockpos, blockstate);
                      }
 
-                     if (entity$movementemission.emitsEvents() && (this.onGround || p_19974_.y == 0.0D || this.isInPowderSnow || flag1)) {
+                     if (entity$movementemission.emitsEvents() && (this.onGround || motionVec.y == 0.0D || this.isInPowderSnow || flag1)) {
                         this.level.gameEvent(GameEvent.STEP, this.position, GameEvent.Context.of(this, this.getBlockStateOn()));
                      }
                   }

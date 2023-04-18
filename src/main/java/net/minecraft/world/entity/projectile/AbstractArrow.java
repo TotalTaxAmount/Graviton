@@ -254,9 +254,9 @@ public abstract class AbstractArrow extends Projectile {
       this.life = 0;
    }
 
-   public void move(MoverType p_36749_, Vec3 p_36750_) {
-      super.move(p_36749_, p_36750_);
-      if (p_36749_ != MoverType.SELF && this.shouldFall()) {
+   public void move(MoverType moverType, Vec3 motionVec) {
+      super.move(moverType, motionVec);
+      if (moverType != MoverType.SELF && this.shouldFall()) {
          this.startFalling();
       }
 

@@ -1,5 +1,6 @@
 package dev.totaltax.particle.command;
 
+import dev.totaltax.particle.event.impl.EventSendChat;
 import org.reflections.Reflections;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public class CommandManager {
             } catch (InstantiationException | IllegalAccessException ignore) {}
         });
     }
+
+    public void handleChat(EventSendChat event) {}
 
     public List<Command> getModules() {
         return commands;

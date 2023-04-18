@@ -14,6 +14,7 @@ import java.util.OptionalInt;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
+import dev.totaltax.particle.event.impl.EventPreMotion;
 import dev.totaltax.particle.event.impl.EventUpdate;
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -359,6 +360,7 @@ public abstract class Player extends LivingEntity {
    }
 
    protected void updatePlayerPose() {
+      
       if (this.canEnterPose(Pose.SWIMMING)) {
          Pose pose;
          if (this.isFallFlying()) {

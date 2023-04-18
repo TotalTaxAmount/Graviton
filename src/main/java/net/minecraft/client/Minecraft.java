@@ -639,11 +639,11 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
       return stringbuilder.toString();
    }
 
-   private UserApiService createUserApiService(YggdrasilAuthenticationService p_193586_, GameConfig p_193587_) {
+   private UserApiService createUserApiService(YggdrasilAuthenticationService ygg, GameConfig config) {
       try {
-         return p_193586_.createUserApiService(p_193587_.user.user.getAccessToken());
-      } catch (AuthenticationException authenticationexception) {
-         LOGGER.error("Failed to verify authentication", (Throwable)authenticationexception);
+         return ygg.createUserApiService(config.user.user.getAccessToken());
+      } catch (Exception e) {
+         LOGGER.warn("Failed to verify auth (no account)");
          return UserApiService.OFFLINE;
       }
    }

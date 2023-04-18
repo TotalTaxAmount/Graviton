@@ -20,4 +20,8 @@ public class ModuleManager {
     public List<Module> getModules() {
         return modules;
     }
+
+    public Module getModuleByName(String name) {
+        return modules.stream().filter(module -> module.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
 }

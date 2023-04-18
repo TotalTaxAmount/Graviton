@@ -275,11 +275,11 @@ public class Shulker extends AbstractGolem implements VariantHolder<Optional<Dye
       return super.finalizeSpawn(p_149780_, p_149781_, p_149782_, p_149783_, p_149784_);
    }
 
-   public void move(MoverType p_33424_, Vec3 p_33425_) {
-      if (p_33424_ == MoverType.SHULKER_BOX) {
+   public void move(MoverType moverType, Vec3 motionVec) {
+      if (moverType == MoverType.SHULKER_BOX) {
          this.teleportSomewhere();
       } else {
-         super.move(p_33424_, p_33425_);
+         super.move(moverType, motionVec);
       }
 
    }

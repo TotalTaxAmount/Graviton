@@ -161,8 +161,8 @@ public abstract class HangingEntity extends Entity {
       }
    }
 
-   public void move(MoverType p_31719_, Vec3 p_31720_) {
-      if (!this.level.isClientSide && !this.isRemoved() && p_31720_.lengthSqr() > 0.0D) {
+   public void move(MoverType moverType, Vec3 motionVec) {
+      if (!this.level.isClientSide && !this.isRemoved() && motionVec.lengthSqr() > 0.0D) {
          this.kill();
          this.dropItem((Entity)null);
       }

@@ -69,8 +69,8 @@ public class Vex extends Monster implements TraceableEntity {
       return this.tickCount % TICKS_PER_FLAP == 0;
    }
 
-   public void move(MoverType p_33997_, Vec3 p_33998_) {
-      super.move(p_33997_, p_33998_);
+   public void move(MoverType moverType, Vec3 motionVec) {
+      super.move(moverType, motionVec);
       this.checkInsideBlocks();
    }
 
