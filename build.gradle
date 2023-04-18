@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-import net.minecraftforge.forge.tasks.*
+//import net.minecraftforge.forge.tasks.*
 import org.jetbrains.gradle.ext.*
 
 apply plugin: 'eclipse'
@@ -98,17 +98,17 @@ task runclient(type: JavaExec) {
 }
 
 
-
-task setup() {
-    group = "MCP"
-    description = "Setups the dev workspace"
-    dependsOn ':extractMapped'
-    mkdir 'run/assets'
-    copy {
-        from downloadAssets.output.path
-        into 'run/assets'
-    }
-}
+// FUCK THIS RETARTED SHIT NEVER RUN IT IM GONNA KILL MY SELF
+//task setup() {
+//    group = "MCP"
+//    description = "Setups the dev workspace"
+//    dependsOn ':extractMapped'
+//    mkdir 'run/assets'
+//    copy {
+//        from downloadAssets.output.path
+//        into 'run/assets'
+//    }
+//}
 
 task copyAssets {
     group = "MCP"
