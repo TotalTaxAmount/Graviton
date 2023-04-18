@@ -1,4 +1,4 @@
-rootProject.name = 'Particle'
+rootProject.name = 'Graviton'
 
 include ':mcp'
 project(":mcp").projectDir = file("projects/mcp")

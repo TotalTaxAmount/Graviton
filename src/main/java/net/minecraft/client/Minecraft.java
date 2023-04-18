@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Queues;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.minecraft.BanDetails;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.minecraft.UserApiService;
@@ -61,7 +60,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
-import dev.totaltax.particle.Particle;
+import dev.totaltax.graviton.Graviton;
 import net.minecraft.ChatFormatting;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -694,7 +693,7 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
       if (Runtime.getRuntime().availableProcessors() > 4) {
          this.gameThread.setPriority(10);
       }
-      Particle.getInstance().start();
+      Graviton.getInstance().start();
 
       try {
          boolean flag = false;

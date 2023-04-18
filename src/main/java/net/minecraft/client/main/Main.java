@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import javax.annotation.Nullable;
 
-import dev.totaltax.particle.Particle;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;

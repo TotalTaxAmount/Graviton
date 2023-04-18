@@ -14,8 +14,7 @@ import java.util.OptionalInt;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
-import dev.totaltax.particle.event.impl.EventPreMotion;
-import dev.totaltax.particle.event.impl.EventUpdate;
+import dev.totaltax.graviton.event.impl.EventUpdate;
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;

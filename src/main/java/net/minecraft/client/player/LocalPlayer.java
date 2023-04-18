@@ -8,8 +8,7 @@ import java.util.Objects;
 import java.util.stream.StreamSupport;
 import javax.annotation.Nullable;
 
-import dev.totaltax.particle.event.impl.EventPreMotion;
-import dev.totaltax.particle.util.ChatUtil;
+import dev.totaltax.graviton.event.impl.EventPreMotion;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;

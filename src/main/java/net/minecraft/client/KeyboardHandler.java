@@ -10,7 +10,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import javax.annotation.Nullable;
 
-import dev.totaltax.particle.event.impl.EventKey;
+import dev.totaltax.graviton.event.impl.EventKey;
 import net.minecraft.ChatFormatting;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
