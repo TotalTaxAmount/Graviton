@@ -317,7 +317,7 @@ public class KeyboardHandler {
             return;
          eventKey.call();
 
-         //System.out.println("window: " + window + " dir: " + direction +" key: " + key + " p_90896: " + p_90896_ + " other p: " + p_90898_);
+         System.out.println("window: " + window + " dir: " + direction +" key: " + key + " p_90896: " + p_90896_ + " other p: " + p_90898_);
 
 
          Screen screen = this.minecraft.screen;

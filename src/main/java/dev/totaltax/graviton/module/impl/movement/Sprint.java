@@ -15,7 +15,6 @@ public class Sprint extends Module {
 
     @EventTarget
     public void onUpdate(EventUpdate event) {
-        Graviton.getInstance().getLogger().debug("What the fuck?");
         if ((!mc.player.horizontalCollision && mc.player.input.forwardImpulse > 0) || true) {
             mc.player.setSprinting(true);
         }

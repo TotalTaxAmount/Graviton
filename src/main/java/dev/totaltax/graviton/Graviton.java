@@ -4,7 +4,9 @@ import dev.totaltax.graviton.command.CommandManager;
 import dev.totaltax.graviton.event.EventManager;
 import dev.totaltax.graviton.event.EventTarget;
 import dev.totaltax.graviton.event.impl.EventKey;
+import dev.totaltax.graviton.file.FileManager;
 import dev.totaltax.graviton.module.ModuleManager;
+import dev.totaltax.graviton.ui.Ultralight;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +21,7 @@ public class Graviton {
     private ModuleManager moduleManager;
     private CommandManager commandManager;
     private EventManager eventManager;
+    private FileManager fileManager;
 
 
     public void start() {
@@ -27,9 +30,12 @@ public class Graviton {
         eventManager = new EventManager();
         moduleManager = new ModuleManager();
         commandManager = new CommandManager();
+        fileManager = new FileManager();
 
         moduleManager.init();
         commandManager.init();
+        fileManager.init();
+        Ultralight.init();
 
         logger.info("Done!");
         eventManager.register(this);
@@ -39,6 +45,7 @@ public class Graviton {
         logger.info("Shutting down!");
         EventManager.unregister(this);
     }
+
     public static Graviton getInstance() {
         return instance;
     }

@@ -15,6 +15,12 @@ public class EventPreMotion extends Event {
         this.x = x;
         this.y = y;
         this.z = z;
+
+        if (yaw > 180) {
+            yaw = -180;
+        } else if (yaw < -180) {
+            yaw = 180;
+        }
     }
 
     public float getYaw() {

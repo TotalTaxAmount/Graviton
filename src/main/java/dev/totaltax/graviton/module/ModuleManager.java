@@ -10,7 +10,7 @@ public class ModuleManager {
     private List<Module> modules = new CopyOnWriteArrayList<>();
 
     public void init() {
-        new Reflections("dev.totaltax.particle.module.impl").getSubTypesOf(Module.class).forEach(m -> {
+        new Reflections("dev.totaltax.graviton.module.impl").getSubTypesOf(Module.class).forEach(m -> {
             try {
                 modules.add(m.newInstance());
             } catch (InstantiationException | IllegalAccessException ignore) {}
