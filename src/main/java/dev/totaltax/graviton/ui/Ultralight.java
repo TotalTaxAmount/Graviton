@@ -19,13 +19,13 @@ public class Ultralight {
             throw new RuntimeException(e);
         }
 
-        UltralightPlatform platform = UltralightPlatform.instance();
-        platform.setConfig(new UltralightConfig()
-                .fontHinting(FontHinting.SMOOTH)
-        );
-        platform.usePlatformFontLoader();
-        platform.usePlatformFileSystem(ResourceManager.ultralightDir.getAbsolutePath());
-        renderer = UltralightRenderer.create();
+//        UltralightPlatform platform = UltralightPlatform.instance();
+//        platform.setConfig(new UltralightConfig()
+//                .fontHinting(FontHinting.SMOOTH)
+//        );
+//        platform.usePlatformFontLoader();
+//        platform.usePlatformFileSystem(ResourceManager.ultralightDir.getAbsolutePath());
+//        renderer = UltralightRenderer.create();
     }
 
     public static UltralightRenderer getRenderer() {
