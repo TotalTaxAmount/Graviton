@@ -98,6 +98,22 @@ task runclient(type: JavaExec) {
     workingDir 'run'
 }
 
+task runClientWithBootstrapper(type: JavaExec) {
+    group = "MCP"
+    description = "Runs the client"
+    classpath sourceSets.main.runtimeClasspath
+    if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+        jvmArgs '-XstartOnFirstThread'
+    }
+//    args '--gameDir', '.'
+//    args '--version', minecraft_version
+//    args '--assetsDir', downloadAssets.output
+//    args '--assetIndex', "1.19"
+//    args '--accessToken', '0'
+    main 'dev.totaltax.bootstrapper.Bootstrapper'
+    workingDir 'run'
+}
+
 
 // FUCK THIS RETARTED SHIT NEVER RUN IT IM GONNA KILL MY SELF
 //task setup() {
