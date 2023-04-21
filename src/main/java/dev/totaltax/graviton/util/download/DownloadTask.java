@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class DownloadTask extends SwingWorker<Void, Void> {
-    private final String name;
     private String downloadURL;
     private String saveDirectory;
     private DownloadGUI gui;
@@ -18,7 +17,6 @@ public class DownloadTask extends SwingWorker<Void, Void> {
         this.gui = gui;
         this.downloadURL = downloadURL;
         this.saveDirectory = saveDirectory;
-        this.name = Constants.system.IS_WINDOWS ? saveDirectory.substring(saveDirectory.lastIndexOf("\\") - 1) : saveDirectory.substring(saveDirectory.lastIndexOf("/"));
     }
 
 
@@ -28,7 +26,7 @@ public class DownloadTask extends SwingWorker<Void, Void> {
             HTTPDownload httpDownload = new HTTPDownload();
             httpDownload.downloadFile(downloadURL);
 
-            String path = saveDirectory + File.separator + name;
+            String path = saveDirectory;
 
             InputStream stream = httpDownload.getInputStream();
             FileOutputStream outputStream = new FileOutputStream(path);
