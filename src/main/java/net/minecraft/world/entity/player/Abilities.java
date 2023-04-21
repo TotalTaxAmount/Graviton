@@ -8,7 +8,7 @@ public class Abilities {
    public boolean mayfly;
    public boolean instabuild;
    public boolean mayBuild = true;
-   private float flyingSpeed = 0.05F;
+   public float flyingSpeed = 0.05F;
    private float walkingSpeed = 0.1F;
 
    public void addSaveData(CompoundTag p_35946_) {

@@ -14,11 +14,14 @@ public class Fly extends Module {
     @EventTarget
     public void onUpdate(EventUpdate event) {
         mc.player.getAbilities().flying = true;
+        mc.player.getAbilities().flyingSpeed = 0.1F;
+        mc.player.getAbilities().mayfly = true;
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
         mc.player.getAbilities().flying = false;
+        mc.player.getAbilities().mayfly = false;
     }
 }

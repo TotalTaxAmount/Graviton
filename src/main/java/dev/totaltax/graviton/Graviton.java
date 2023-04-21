@@ -4,6 +4,7 @@ import dev.totaltax.graviton.command.CommandManager;
 import dev.totaltax.graviton.event.EventManager;
 import dev.totaltax.graviton.event.EventTarget;
 import dev.totaltax.graviton.event.impl.EventKey;
+import dev.totaltax.graviton.event.impl.EventUpdate;
 import dev.totaltax.graviton.file.FileManager;
 import dev.totaltax.graviton.module.ModuleManager;
 import dev.totaltax.graviton.ui.Ultralight;
@@ -25,8 +26,7 @@ public class Graviton {
 
 
     public void start() {
-        logger.info("Initializing Particle...");
-        Minecraft.getInstance().getWindow().setTitle(name + " >> " + version);
+        logger.info("Initializing Graviton...");
         eventManager = new EventManager();
         moduleManager = new ModuleManager();
         commandManager = new CommandManager();
@@ -36,12 +36,15 @@ public class Graviton {
         commandManager.init();
         fileManager.init();
         // TODO: This is gonna be a lot of work...
-        Ultralight.init();
 
         logger.info("Done!");
         eventManager.register(this);
     }
 
+    @EventTarget
+    public void onUpdate(EventUpdate event) {
+        Minecraft.getInstance().getWindow().setTitle(name + " >> " + version);
+    }
     public void stop() {
         logger.info("Shutting down!");
         EventManager.unregister(this);
