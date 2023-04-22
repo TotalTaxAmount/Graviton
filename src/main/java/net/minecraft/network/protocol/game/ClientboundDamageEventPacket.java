@@ -30,12 +30,12 @@ public record ClientboundDamageEventPacket(int entityId, int sourceTypeId, int s
       return p_270462_.readVarInt() - 1;
    }
 
-   public void write(FriendlyByteBuf p_270971_) {
-      p_270971_.writeVarInt(this.entityId);
-      p_270971_.writeVarInt(this.sourceTypeId);
-      writeOptionalEntityId(p_270971_, this.sourceCauseId);
-      writeOptionalEntityId(p_270971_, this.sourceDirectId);
-      p_270971_.writeOptional(this.sourcePosition, (p_270788_, p_270196_) -> {
+   public void write(FriendlyByteBuf friendlyByteBuf) {
+      friendlyByteBuf.writeVarInt(this.entityId);
+      friendlyByteBuf.writeVarInt(this.sourceTypeId);
+      writeOptionalEntityId(friendlyByteBuf, this.sourceCauseId);
+      writeOptionalEntityId(friendlyByteBuf, this.sourceDirectId);
+      friendlyByteBuf.writeOptional(this.sourcePosition, (p_270788_, p_270196_) -> {
          p_270788_.writeDouble(p_270196_.x());
          p_270788_.writeDouble(p_270196_.y());
          p_270788_.writeDouble(p_270196_.z());

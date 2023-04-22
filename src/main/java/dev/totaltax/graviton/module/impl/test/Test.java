@@ -22,21 +22,21 @@ public class Test extends Module {
 
     @EventTarget
     public void onReceivePacket(EventReceivePacket event) {
-        //ChatUtil.sendDebug("Receive packet: " + event.getPacket());
-        //System.out.println("Receive packet: " + event.getPacket());
+        ChatUtil.sendDebug("Receive packet: " + event.getPacket());
+        System.out.println("Receive packet: " + event.getPacket());
     }
 
     @EventTarget
     public void onPreMotion(EventPreMotion event) {
-        ChatUtil.sendChat("------------------------");
-        ChatUtil.sendDebug("X: " + event.getX());
-        ChatUtil.sendDebug("Y: " + event.getY());
-        ChatUtil.sendDebug("Z: " + event.getZ());
-        ChatUtil.sendDebug("Yaw: " + event.getYaw());
-        ChatUtil.sendDebug("Pitch: " + event.getPitch());
-        ChatUtil.sendDebug("Ground: " + event.isOnGround());
-
-
+//        ChatUtil.sendChat("------------------------");
+//        ChatUtil.sendDebug("X: " + event.getX());
+//        ChatUtil.sendDebug("Y: " + event.getY());
+//        ChatUtil.sendDebug("Z: " + event.getZ());
+//        ChatUtil.sendDebug("Yaw: " + event.getYaw());
+//        ChatUtil.sendDebug("Pitch: " + event.getPitch());
+//        ChatUtil.sendDebug("Ground: " + event.isOnGround());
+//
+//
 
     }
 }

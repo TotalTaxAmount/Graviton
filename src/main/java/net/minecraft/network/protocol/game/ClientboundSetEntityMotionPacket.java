@@ -7,10 +7,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 public class ClientboundSetEntityMotionPacket implements Packet<ClientGamePacketListener> {
-   private final int id;
-   private final int xa;
-   private final int ya;
-   private final int za;
+   public final int id;
+   public int xa;
+   public int ya;
+   public int za;
 
    public ClientboundSetEntityMotionPacket(Entity p_133185_) {
       this(p_133185_.getId(), p_133185_.getDeltaMovement());
@@ -60,4 +60,6 @@ public class ClientboundSetEntityMotionPacket implements Packet<ClientGamePacket
    public int getZa() {
       return this.za;
    }
+
+
 }
