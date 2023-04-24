@@ -1,5 +1,6 @@
 package dev.totaltax.bootstrapper;
 
+import com.labymedia.ultralight.UltralightLoadException;
 import dev.totaltax.bootstrapper.ultralight.Ultralight;
 import net.minecraft.client.main.Main;
 import net.minecraft.network.Connection;
@@ -13,7 +14,7 @@ public class Bootstrapper {
     {
         try {
             Ultralight.init();
-        } catch (InterruptedException | IOException e) {
+        } catch (InterruptedException | IOException | UltralightLoadException e) {
             throw new RuntimeException(e);
         }
 

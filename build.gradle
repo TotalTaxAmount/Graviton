@@ -46,10 +46,16 @@ repositories {
 
 dependencies {
     implementation 'net.minecraftforge:forgespi:' + spi_version
-    implementation 'com.labymedia:ultralight-java-base:0.4.12'
     implementation 'org.reflections:reflections:0.10.2'
     implementation 'org.openjfx:javafx-controls:20'
     implementation 'org.tukaani:xz:1.9'
+    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.22'
+
+    // Ultralight
+    implementation 'com.labymedia:ultralight-java-base:0.4.12'
+    implementation "com.labymedia:ultralight-java-databind:0.4.12"
+    implementation "com.labymedia:ultralight-java-gpu:0.4.12"
+
 
 //    Use the shade to add the lib to the jar
 //    or use compile if you want to load the lib from the version.json
