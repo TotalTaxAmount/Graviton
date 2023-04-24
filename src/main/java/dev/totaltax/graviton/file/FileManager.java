@@ -7,14 +7,12 @@ import java.io.File;
 
 public class FileManager {
 
-    File dir = new File(Minecraft.getInstance().gameDirectory, Graviton.getInstance().getName());
+    File dir = new File(System.getProperty("user.dir"), Graviton.getInstance().getName());
 
-    File temp = new File(dir, "/temp");
+    File ultralight = new File(dir, "/ultralight");
 
     public void init() {
-        if (!dir.exists() || !dir.isDirectory()) {
-            dir.mkdirs();
-        }
+        if (ultralight.mkdirs()) Graviton.getInstance().getLogger().info("Created ultralight dir");
     }
 
     public File getDir() {

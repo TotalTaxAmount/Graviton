@@ -35,6 +35,7 @@ public class Graviton {
         moduleManager.init();
         commandManager.init();
         fileManager.init();
+        Ultralight.init();
         // TODO: This is gonna be a lot of work...
 
         logger.info("Done!");
