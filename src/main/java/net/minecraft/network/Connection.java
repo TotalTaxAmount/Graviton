@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mojang.logging.LogUtils;
 import dev.totaltax.graviton.event.impl.EventReceivePacket;
 import dev.totaltax.graviton.event.impl.EventSendPacket;
+import dev.totaltax.graviton.util.ChatUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -149,8 +150,11 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
       if (this.channel.isOpen()) {
 
          EventReceivePacket eventReceivePacket = new EventReceivePacket(packet);
-         if (eventReceivePacket.isCancelled())
+         if (eventReceivePacket.isCancelled()) {
+//            ChatUtil.sendDebug("Event cancelled");
+            System.out.println("Cancelled");
             return;
+         }
          eventReceivePacket.call();
 
          try {

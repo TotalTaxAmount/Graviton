@@ -2,7 +2,9 @@ package dev.totaltax.bootstrapper;
 
 import dev.totaltax.bootstrapper.ultralight.Ultralight;
 import net.minecraft.client.main.Main;
+import net.minecraft.network.Connection;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
@@ -10,8 +12,8 @@ public class Bootstrapper {
     public static void main(String[] args)
     {
         try {
-            Ultralight.getNatives();
-        } catch (InterruptedException e) {
+            Ultralight.init();
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
 

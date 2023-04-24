@@ -19,6 +19,7 @@ public class Velocity extends Module {
         if (event.getPacket() instanceof ClientboundSetEntityMotionPacket) {
             ClientboundSetEntityMotionPacket packet = (ClientboundSetEntityMotionPacket) event.getPacket();
             if (packet.id == mc.player.getId()){
+                event.setCancelled(true);
                 packet.xa = 0;
                 packet.ya = 0;
                 packet.za = 0;
