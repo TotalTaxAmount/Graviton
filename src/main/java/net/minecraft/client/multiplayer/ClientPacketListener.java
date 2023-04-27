@@ -1664,16 +1664,14 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
    }
 
    public void handleKeepAlive(ClientboundKeepAlivePacket p_105020_) {
-      this.sendWhen(new ServerboundKeepAlivePacket(p_105020_.getId()), () -> {
-         return !RenderSystem.isFrozenAtPollEvents();
-      }, Duration.ofMinutes(1L));
+      this.sendWhen(new ServerboundKeepAlivePacket(p_105020_.getId()), () -> !RenderSystem.isFrozenAtPollEvents(), Duration.ofMinutes(1L));
    }
 
-   private void sendWhen(Packet<ServerGamePacketListener> p_270433_, BooleanSupplier p_270843_, Duration p_270497_) {
-      if (p_270843_.getAsBoolean()) {
-         this.send(p_270433_);
+   private void sendWhen(Packet<ServerGamePacketListener> deferredPacket, BooleanSupplier asBoolean, Duration p_270497_) {
+      if (asBoolean.getAsBoolean()) {
+         this.send(deferredPacket);
       } else {
-         this.deferredPackets.add(new ClientPacketListener.DeferredPacket(p_270433_, p_270843_, Util.getMillis() + p_270497_.toMillis()));
+         this.deferredPackets.add(new ClientPacketListener.DeferredPacket(deferredPacket, asBoolean, Util.getMillis() + p_270497_.toMillis()));
       }
 
    }
@@ -1825,13 +1823,13 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
 
    }
 
-   public void handleCustomPayload(ClientboundCustomPayloadPacket p_105004_) {
-      PacketUtils.ensureRunningOnSameThread(p_105004_, this, this.minecraft);
-      ResourceLocation resourcelocation = p_105004_.getIdentifier();
+   public void handleCustomPayload(ClientboundCustomPayloadPacket packet) {
+      PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft);
+      ResourceLocation resourcelocation = packet.getIdentifier();
       FriendlyByteBuf friendlybytebuf = null;
 
       try {
-         friendlybytebuf = p_105004_.getData();
+         friendlybytebuf = packet.getData();
          if (ClientboundCustomPayloadPacket.BRAND.equals(resourcelocation)) {
             String s = friendlybytebuf.readUtf();
             this.minecraft.player.setServerBrand(s);
