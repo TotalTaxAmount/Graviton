@@ -11,7 +11,7 @@ import dev.totaltax.graviton.util.ChatUtil;
 
 public class Test extends Module {
     public Test() {
-        super("Test", InputConstants.KEY_M, Category.NONE);
+        super("Test", "Dev test suite", InputConstants.KEY_M, Category.NONE);
     }
 
     @EventTarget

@@ -10,7 +10,7 @@ import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 
 public class NoFall extends Module {
     public NoFall() {
-        super("No Fall", InputConstants.KEY_N, Category.PLAYER);
+        super("No Fall", "Prevents fall damage", InputConstants.KEY_N, Category.PLAYER);
     }
 
     @EventTarget

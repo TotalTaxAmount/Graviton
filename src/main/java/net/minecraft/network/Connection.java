@@ -134,7 +134,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
                   Packet<?> packet = (Packet<?>)(connectionprotocol == ConnectionProtocol.LOGIN ? new ClientboundLoginDisconnectPacket(component) : new ClientboundDisconnectPacket(component));
                   this.send(packet, PacketSendListener.thenRun(() -> {
                      this.disconnect(component);
-                  }));
+                  }), true);
                   this.setReadOnly();
                } else {
                   LOGGER.debug("Double fault", p_129534_);
@@ -182,15 +182,19 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
    }
 
    public void send(Packet<?> p_129513_) {
-      this.send(p_129513_, (PacketSendListener)null);
+      this.send(p_129513_, (PacketSendListener)null, true);
    }
 
-   public void send(Packet<?> packet, @Nullable PacketSendListener p_243316_) {
+   public void sendNoEvent(Packet<?> packet) {
+      this.send(packet, null, false);
+   }
+
+   public void send(Packet<?> packet, @Nullable PacketSendListener p_243316_, boolean event) {
 
       EventSendPacket eventSendPacket = new EventSendPacket(packet);
       if (eventSendPacket.isCancelled())
          return;
-      eventSendPacket.call();
+      if (event) eventSendPacket.call();
 
       if (this.isConnected()) {
          this.flushQueue();

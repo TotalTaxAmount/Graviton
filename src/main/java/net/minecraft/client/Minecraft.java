@@ -761,21 +761,7 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
             return p_231353_.getTags().map(TagKey::location);
          }, p_231430_);
       });
-      this.searchRegistry.register(SearchRegistry.RECIPE_COLLECTIONS, (p_231389_) -> {
-         return new FullTextSearchTree<>((p_266611_) -> {
-            return p_266611_.getRecipes().stream().flatMap((p_266607_) -> {
-               return p_266607_.getResultItem(p_266611_.registryAccess()).getTooltipLines((Player)null, TooltipFlag.Default.NORMAL).stream();
-            }).map((p_231455_) -> {
-               return ChatFormatting.stripFormatting(p_231455_.getString()).trim();
-            }).filter((p_231449_) -> {
-               return !p_231449_.isEmpty();
-            });
-         }, (p_266608_) -> {
-            return p_266608_.getRecipes().stream().map((p_266610_) -> {
-               return BuiltInRegistries.ITEM.getKey(p_266610_.getResultItem(p_266608_.registryAccess()).getItem());
-            });
-         }, p_231389_);
-      });
+      this.searchRegistry.register(SearchRegistry.RECIPE_COLLECTIONS, (p_231389_) -> new FullTextSearchTree<>((p_266611_) -> p_266611_.getRecipes().stream().flatMap((p_266607_) -> p_266607_.getResultItem(p_266611_.registryAccess()).getTooltipLines((Player)null, TooltipFlag.Default.NORMAL).stream()).map((p_231455_) -> ChatFormatting.stripFormatting(p_231455_.getString()).trim()).filter((p_231449_) -> !p_231449_.isEmpty()), (p_266608_) -> p_266608_.getRecipes().stream().map((p_266610_) -> BuiltInRegistries.ITEM.getKey(p_266610_.getResultItem(p_266608_.registryAccess()).getItem())), p_231389_));
       CreativeModeTabs.searchTab().setSearchTreeBuilder((p_255439_) -> {
          this.populateSearchTree(SearchRegistry.CREATIVE_NAMES, p_255439_);
          this.populateSearchTree(SearchRegistry.CREATIVE_TAGS, p_255439_);

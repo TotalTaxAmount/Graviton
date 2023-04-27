@@ -8,7 +8,7 @@ import dev.totaltax.graviton.module.Module;
 
 public class Fly extends Module {
     public Fly() {
-        super("Fly", InputConstants.KEY_G, Category.MOVEMENT);
+        super("Fly", "Allows you to fly", InputConstants.KEY_G, Category.MOVEMENT);
     }
 
     @EventTarget

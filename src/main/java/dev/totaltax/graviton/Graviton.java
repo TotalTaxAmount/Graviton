@@ -6,6 +6,7 @@ import dev.totaltax.graviton.event.EventTarget;
 import dev.totaltax.graviton.event.impl.EventKey;
 import dev.totaltax.graviton.event.impl.EventUpdate;
 import dev.totaltax.graviton.file.FileManager;
+import dev.totaltax.graviton.module.Module;
 import dev.totaltax.graviton.module.ModuleManager;
 import dev.totaltax.graviton.ui.Ultralight;
 import net.minecraft.client.Minecraft;
@@ -80,10 +81,7 @@ public class Graviton {
 
     @EventTarget
     public void onKey(EventKey event) {
-        moduleManager.getModules().forEach(m -> {
-            if (m.getKey() == event.getKey() && event.getDirection() == EventKey.Type.DOWN) {
-                m.toggle();
-            }
-        });
+        if (!Minecraft.getInstance().gui.isShowingChatDisabledByPlayer()) return;
+        moduleManager.getModules().stream().filter(m -> m.getKey() == event.getKey() && event.getDirection() == EventKey.Type.DOWN).forEach(Module::toggle);;
     }
 }

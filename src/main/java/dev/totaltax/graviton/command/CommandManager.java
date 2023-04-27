@@ -3,6 +3,7 @@ package dev.totaltax.graviton.command;
 import dev.totaltax.graviton.event.impl.EventSendChat;
 import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -10,10 +11,10 @@ public class CommandManager {
     private List<Command> commands = new CopyOnWriteArrayList<>();
 
     public void init() {
-        new Reflections("dev.totaltax.graviton.command.impl").getSubTypesOf(Command.class).forEach(m -> {
+        new Reflections("dev.totaltax.graviton.command.impl").getSubTypesOf(Command.class).forEach(c -> {
             try {
-                commands.add(m.newInstance());
-            } catch (InstantiationException | IllegalAccessException ignore) {}
+                commands.add(c.getConstructor().newInstance());
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ignore) {}
         });
     }
 

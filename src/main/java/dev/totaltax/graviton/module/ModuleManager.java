@@ -2,6 +2,7 @@ package dev.totaltax.graviton.module;
 
 import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -12,8 +13,8 @@ public class ModuleManager {
     public void init() {
         new Reflections("dev.totaltax.graviton.module.impl").getSubTypesOf(Module.class).forEach(m -> {
             try {
-                modules.add(m.newInstance());
-            } catch (InstantiationException | IllegalAccessException ignore) {}
+                modules.add(m.getConstructor().newInstance());
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ignore) {}
         });
     }
 

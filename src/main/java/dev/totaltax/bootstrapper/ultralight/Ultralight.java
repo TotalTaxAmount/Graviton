@@ -20,6 +20,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
@@ -38,24 +41,40 @@ public class Ultralight {
         UltralightJava.extractNativeLibrary(binDir.toPath());
         UltralightGPUDriverNativeUtil.extractNativeLibrary(binDir.toPath());
 
+
+
 //        Stream.of(Objects.requireNonNull(binDir.listFiles())).forEach((file -> {
 //            if (!file.getName().endsWith(".dll")) return;
 //            Path f = new File(binDir.toPath().toFile(), file.getName()).toPath().toAbsolutePath();
 //            System.load(f.toAbsolutePath().toString());
 //        }));
-
-        System.load(new File(binDir.toPath().toFile(), "UltralightCore.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "glib-2.0-0.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "gobject-2.0-0.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "gmodule-2.0-0.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "gio-2.0-0.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "gstreamer-full-1.0.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "WebCore.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "Ultralight.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "ultralight-java-gpu.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "AppCore.dll").toPath().toAbsolutePath().toString());
-        System.load(new File(binDir.toPath().toFile(), "ultralight-java.dll").toPath().toAbsolutePath().toString());
-
+        if (Constants.system.IS_WINDOWS) {
+            System.load(new File(binDir.toPath().toFile(), "UltralightCore.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "glib-2.0-0.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "gobject-2.0-0.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "gmodule-2.0-0.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "gio-2.0-0.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "gstreamer-full-1.0.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "WebCore.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "Ultralight.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "ultralight-java-gpu.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "AppCore.dll").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "ultralight-java.dll").toPath().toAbsolutePath().toString());
+        } else if (Constants.system.IS_UNIX) {
+            System.load(new File(binDir.toPath().toFile(), "libUltralightCore.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libglib-2.0.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libgobject-2.0.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libgmodule-2.0.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libgio-2.0.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libgstreamer-full-1.0.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libWebCore.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libUltralight.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libultralight-java-gpu.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libAppCore.so").toPath().toAbsolutePath().toString());
+            System.load(new File(binDir.toPath().toFile(), "libultralight-java.so").toPath().toAbsolutePath().toString());
+        } else {
+            throw new RemoteException("Unknown OS");
+        }
     }
 
 

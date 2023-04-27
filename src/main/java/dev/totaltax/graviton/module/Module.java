@@ -7,8 +7,7 @@ import net.minecraft.client.Minecraft;
 public class Module {
     protected Minecraft mc = Minecraft.getInstance();
 
-    private String name;
-    private String displayName;
+    private String name, displayName, description;
     private int key;
     private Category category;
     private boolean enabled;
@@ -17,9 +16,10 @@ public class Module {
         super();
     }
 
-    public Module(String name, int key, Category category) {
+    public Module(String name, String description, int key, Category category) {
         this.name = name;
         this.displayName = name;
+        this.description = description;
         this.key = key;
         this.category = category;
         this.enabled = false;
@@ -62,6 +62,10 @@ public class Module {
         return displayName;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public int getKey() {
         return key;
     }
@@ -76,5 +80,16 @@ public class Module {
 
     public void setDisplayName(String name) {
         this.displayName = name;
+    }
+
+    @Override
+    public String toString() {
+        return name + "{" +
+                "displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", key=" + key +
+                ", category=" + category +
+                ", enabled=" + enabled +
+                '}';
     }
 }
