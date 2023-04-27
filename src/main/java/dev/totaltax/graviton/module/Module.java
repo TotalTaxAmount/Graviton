@@ -2,6 +2,8 @@ package dev.totaltax.graviton.module;
 
 import dev.totaltax.graviton.Graviton;
 import dev.totaltax.graviton.event.EventManager;
+import dev.totaltax.graviton.module.setting.Settings;
+import dev.totaltax.graviton.util.ChatUtil;
 import net.minecraft.client.Minecraft;
 
 public class Module {
@@ -11,6 +13,8 @@ public class Module {
     private int key;
     private Category category;
     private boolean enabled;
+
+    public Settings settingGroup;
 
     public Module() {
         super();
@@ -27,6 +31,8 @@ public class Module {
 
     public void onEnable() {
         Graviton.getInstance().getEventManager().register(this);
+        ChatUtil.sendDebug("Enabled: " + this.getName());
+        System.out.println("sda");
     }
 
     public void onDisable() {
@@ -54,6 +60,9 @@ public class Module {
             onDisable();
     }
 
+    public Settings getSettings() {
+        return this.settingGroup;
+    }
     public String getName() {
         return name;
     }

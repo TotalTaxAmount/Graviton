@@ -81,7 +81,7 @@ public class Graviton {
 
     @EventTarget
     public void onKey(EventKey event) {
-        if (!Minecraft.getInstance().gui.isShowingChatDisabledByPlayer()) return;
+        //if (!Minecraft.getInstance().gui.isShowingChatDisabledByPlayer()) return;
         moduleManager.getModules().stream().filter(m -> m.getKey() == event.getKey() && event.getDirection() == EventKey.Type.DOWN).forEach(Module::toggle);;
     }
 }
