@@ -351,7 +351,6 @@ public class KeyboardHandler {
 
                Screenshot.grab(this.minecraft.gameDirectory, this.minecraft.getMainRenderTarget(), (p_90917_) -> {
                   this.minecraft.execute(() -> {
-                     // TODO: Remember this for adding shit to chat in future
                      this.minecraft.gui.getChat().addMessage(p_90917_);
                   });
                });

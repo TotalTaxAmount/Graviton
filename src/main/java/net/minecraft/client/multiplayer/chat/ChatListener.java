@@ -84,16 +84,16 @@ public class ChatListener {
 
    }
 
-   public void handlePlayerChatMessage(PlayerChatMessage p_251553_, GameProfile p_250022_, ChatType.Bound p_252158_) {
+   public void handlePlayerChatMessage(PlayerChatMessage message, GameProfile profile, ChatType.Bound bound) {
       boolean flag = this.minecraft.options.onlyShowSecureChat().get();
-      PlayerChatMessage playerchatmessage = flag ? p_251553_.removeUnsignedContent() : p_251553_;
-      Component component = p_252158_.decorate(playerchatmessage.decoratedContent());
+      PlayerChatMessage playerchatmessage = flag ? message.removeUnsignedContent() : message;
+      Component component = bound.decorate(playerchatmessage.decoratedContent());
       Instant instant = Instant.now();
-      this.handleMessage(p_251553_.signature(), () -> {
-         boolean flag1 = this.showMessageToPlayer(p_252158_, p_251553_, component, p_250022_, flag, instant);
+      this.handleMessage(message.signature(), () -> {
+         boolean flag1 = this.showMessageToPlayer(bound, message, component, profile, flag, instant);
          ClientPacketListener clientpacketlistener = this.minecraft.getConnection();
          if (clientpacketlistener != null) {
-            clientpacketlistener.markMessageAsProcessed(p_251553_, flag1);
+            clientpacketlistener.markMessageAsProcessed(message, flag1);
          }
 
          return flag1;

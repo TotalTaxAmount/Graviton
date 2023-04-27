@@ -17,7 +17,10 @@ public class CommandManager {
         });
     }
 
-    public void handleChat(EventSendChat event) {}
+    public void handleChat(EventSendChat event) {
+        String prefix = ".";
+    }
+
 
     public List<Command> getModules() {
         return commands;
