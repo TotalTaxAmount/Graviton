@@ -184,11 +184,12 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
    public void send(Packet<?> p_129513_) {
       this.send(p_129513_, (PacketSendListener)null, true);
    }
-
    public void sendNoEvent(Packet<?> packet) {
       this.send(packet, null, false);
    }
-
+   public void send(Packet<?> packet, @Nullable PacketSendListener p_243316_) {
+      this.send(packet, p_243316_, true);
+   }
    public void send(Packet<?> packet, @Nullable PacketSendListener p_243316_, boolean event) {
 
       EventSendPacket eventSendPacket = new EventSendPacket(packet);
