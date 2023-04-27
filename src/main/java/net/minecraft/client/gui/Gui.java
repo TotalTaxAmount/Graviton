@@ -304,7 +304,7 @@ public class Gui extends GuiComponent {
          }
 
          this.subtitleOverlay.render(p_93031_);
-         Scoreboard scoreboard = this.minecraft.level.getScoreboard();
+         Scoreboard scoreboard = this.minecraft.world.getScoreboard();
          Objective objective = null;
          PlayerTeam playerteam = scoreboard.getPlayersTeam(this.minecraft.player.getScoreboardName());
          if (playerteam != null) {
@@ -401,7 +401,7 @@ public class Gui extends GuiComponent {
          return ((EntityHitResult)p_93025_).getEntity() instanceof MenuProvider;
       } else if (p_93025_.getType() == HitResult.Type.BLOCK) {
          BlockPos blockpos = ((BlockHitResult)p_93025_).getBlockPos();
-         Level level = this.minecraft.level;
+         Level level = this.minecraft.world;
          return level.getBlockState(blockpos).getMenuProvider(level, blockpos) != null;
       } else {
          return false;
@@ -612,10 +612,10 @@ public class Gui extends GuiComponent {
    public void renderDemoOverlay(PoseStack p_93078_) {
       this.minecraft.getProfiler().push("demo");
       Component component;
-      if (this.minecraft.level.getGameTime() >= 120500L) {
+      if (this.minecraft.world.getGameTime() >= 120500L) {
          component = DEMO_EXPIRED_TEXT;
       } else {
-         component = Component.translatable("demo.remainingTime", StringUtil.formatTickDuration((int)(120500L - this.minecraft.level.getGameTime())));
+         component = Component.translatable("demo.remainingTime", StringUtil.formatTickDuration((int)(120500L - this.minecraft.world.getGameTime())));
       }
 
       int i = this.getFont().width(component);
@@ -955,7 +955,7 @@ public class Gui extends GuiComponent {
    }
 
    private void renderVignette(PoseStack p_265650_, Entity p_265294_) {
-      WorldBorder worldborder = this.minecraft.level.getWorldBorder();
+      WorldBorder worldborder = this.minecraft.world.getWorldBorder();
       float f = (float)worldborder.getDistanceToBorder(p_265294_);
       double d0 = Math.min(worldborder.getLerpSpeed() * (double)worldborder.getWarningTime() * 1000.0D, Math.abs(worldborder.getLerpTarget() - worldborder.getSize()));
       double d1 = Math.max((double)worldborder.getWarningBlocks(), d0);

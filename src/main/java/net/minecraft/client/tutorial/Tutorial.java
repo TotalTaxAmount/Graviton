@@ -104,12 +104,12 @@ public class Tutorial {
    public void tick() {
       this.timedToasts.removeIf(Tutorial.TimedToast::updateProgress);
       if (this.instance != null) {
-         if (this.minecraft.level != null) {
+         if (this.minecraft.world != null) {
             this.instance.tick();
          } else {
             this.stop();
          }
-      } else if (this.minecraft.level != null) {
+      } else if (this.minecraft.world != null) {
          this.start();
       }
 

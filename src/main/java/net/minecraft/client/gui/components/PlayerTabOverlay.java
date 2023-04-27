@@ -180,7 +180,7 @@ public class PlayerTabOverlay extends GuiComponent {
             PlayerInfo playerinfo1 = list.get(i4);
             GameProfile gameprofile = playerinfo1.getProfile();
             if (flag) {
-               Player player = this.minecraft.level.getPlayerByUUID(gameprofile.getId());
+               Player player = this.minecraft.world.getPlayerByUUID(gameprofile.getId());
                boolean flag1 = player != null && LivingEntityRenderer.isEntityUpsideDown(player);
                boolean flag2 = player != null && player.isModelPartShown(PlayerModelPart.HAT);
                RenderSystem.setShaderTexture(0, playerinfo1.getSkinLocation());

@@ -35,7 +35,7 @@ public class NeighborsUpdateRenderer implements DebugRenderer.SimpleDebugRendere
    }
 
    public void render(PoseStack p_113600_, MultiBufferSource p_113601_, double p_113602_, double p_113603_, double p_113604_) {
-      long i = this.minecraft.level.getGameTime();
+      long i = this.minecraft.world.getGameTime();
       int j = 200;
       double d0 = 0.0025D;
       Set<BlockPos> set = Sets.newHashSet();

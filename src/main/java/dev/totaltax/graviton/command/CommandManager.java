@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CommandManager {
-    private List<Command> commands = new CopyOnWriteArrayList<>();
+    private final List<Command> commands = new CopyOnWriteArrayList<>();
 
     public void init() {
         new Reflections("dev.totaltax.graviton.command.impl").getSubTypesOf(Command.class).forEach(c -> {

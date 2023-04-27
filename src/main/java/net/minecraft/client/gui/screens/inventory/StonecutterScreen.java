@@ -71,7 +71,7 @@ public class StonecutterScreen extends AbstractContainerScreen<StonecutterMenu> 
             int j1 = i + i1 % 4 * 16;
             int k1 = j + i1 / 4 * 18 + 2;
             if (p_99334_ >= j1 && p_99334_ < j1 + 16 && p_99335_ >= k1 && p_99335_ < k1 + 18) {
-               this.renderTooltip(p_99333_, list.get(l).getResultItem(this.minecraft.level.registryAccess()), p_99334_, p_99335_);
+               this.renderTooltip(p_99333_, list.get(l).getResultItem(this.minecraft.world.registryAccess()), p_99334_, p_99335_);
             }
          }
       }
@@ -104,7 +104,7 @@ public class StonecutterScreen extends AbstractContainerScreen<StonecutterMenu> 
          int k = p_275254_ + j % 4 * 16;
          int l = j / 4;
          int i1 = p_275538_ + l * 18 + 2;
-         this.minecraft.getItemRenderer().renderAndDecorateItem(p_275404_, list.get(i).getResultItem(this.minecraft.level.registryAccess()), k, i1);
+         this.minecraft.getItemRenderer().renderAndDecorateItem(p_275404_, list.get(i).getResultItem(this.minecraft.world.registryAccess()), k, i1);
       }
 
    }

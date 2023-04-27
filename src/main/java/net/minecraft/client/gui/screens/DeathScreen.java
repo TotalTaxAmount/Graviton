@@ -71,8 +71,8 @@ public class DeathScreen extends Screen {
    }
 
    private void exitToTitleScreen() {
-      if (this.minecraft.level != null) {
-         this.minecraft.level.disconnect();
+      if (this.minecraft.world != null) {
+         this.minecraft.world.disconnect();
       }
 
       this.minecraft.clearLevel(new GenericDirtMessageScreen(Component.translatable("menu.savingLevel")));

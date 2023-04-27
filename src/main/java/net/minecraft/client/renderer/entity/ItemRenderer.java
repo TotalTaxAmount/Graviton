@@ -266,19 +266,19 @@ public class ItemRenderer implements ResourceManagerReloadListener {
    }
 
    public void renderAndDecorateItem(PoseStack p_275197_, ItemStack p_275552_, int p_275198_, int p_275738_) {
-      this.tryRenderGuiItem(p_275197_, this.minecraft.player, this.minecraft.level, p_275552_, p_275198_, p_275738_, 0);
+      this.tryRenderGuiItem(p_275197_, this.minecraft.player, this.minecraft.world, p_275552_, p_275198_, p_275738_, 0);
    }
 
    public void renderAndDecorateItem(PoseStack p_275539_, ItemStack p_275685_, int p_275360_, int p_275448_, int p_275456_) {
-      this.tryRenderGuiItem(p_275539_, this.minecraft.player, this.minecraft.level, p_275685_, p_275360_, p_275448_, p_275456_);
+      this.tryRenderGuiItem(p_275539_, this.minecraft.player, this.minecraft.world, p_275685_, p_275360_, p_275448_, p_275456_);
    }
 
    public void renderAndDecorateItem(PoseStack p_275305_, ItemStack p_275612_, int p_275743_, int p_275591_, int p_275231_, int p_275345_) {
-      this.tryRenderGuiItem(p_275305_, this.minecraft.player, this.minecraft.level, p_275612_, p_275743_, p_275591_, p_275231_, p_275345_);
+      this.tryRenderGuiItem(p_275305_, this.minecraft.player, this.minecraft.world, p_275612_, p_275743_, p_275591_, p_275231_, p_275345_);
    }
 
    public void renderAndDecorateFakeItem(PoseStack p_275285_, ItemStack p_275595_, int p_275671_, int p_275526_) {
-      this.tryRenderGuiItem(p_275285_, (LivingEntity)null, this.minecraft.level, p_275595_, p_275671_, p_275526_, 0);
+      this.tryRenderGuiItem(p_275285_, (LivingEntity)null, this.minecraft.world, p_275595_, p_275671_, p_275526_, 0);
    }
 
    public void renderAndDecorateItem(PoseStack p_275668_, LivingEntity p_275691_, ItemStack p_275472_, int p_275283_, int p_275239_, int p_275587_) {

@@ -183,7 +183,7 @@ public class DebugScreenOverlay extends GuiComponent {
 
       BlockPos blockpos = this.minecraft.getCameraEntity().blockPosition();
       if (this.minecraft.showOnlyReducedInfo()) {
-         return Lists.newArrayList("Minecraft " + SharedConstants.getCurrentVersion().getName() + " (" + this.minecraft.getLaunchedVersion() + "/" + ClientBrandRetriever.getClientModName() + ")", this.minecraft.fpsString, s, this.minecraft.levelRenderer.getChunkStatistics(), this.minecraft.levelRenderer.getEntityStatistics(), "P: " + this.minecraft.particleEngine.countParticles() + ". T: " + this.minecraft.level.getEntityCount(), this.minecraft.level.gatherChunkSourceStats(), "", String.format(Locale.ROOT, "Chunk-relative: %d %d %d", blockpos.getX() & 15, blockpos.getY() & 15, blockpos.getZ() & 15));
+         return Lists.newArrayList("Minecraft " + SharedConstants.getCurrentVersion().getName() + " (" + this.minecraft.getLaunchedVersion() + "/" + ClientBrandRetriever.getClientModName() + ")", this.minecraft.fpsString, s, this.minecraft.levelRenderer.getChunkStatistics(), this.minecraft.levelRenderer.getEntityStatistics(), "P: " + this.minecraft.particleEngine.countParticles() + ". T: " + this.minecraft.world.getEntityCount(), this.minecraft.world.gatherChunkSourceStats(), "", String.format(Locale.ROOT, "Chunk-relative: %d %d %d", blockpos.getX() & 15, blockpos.getY() & 15, blockpos.getZ() & 15));
       } else {
          Entity entity = this.minecraft.getCameraEntity();
          Direction direction = entity.getDirection();
@@ -213,13 +213,13 @@ public class DebugScreenOverlay extends GuiComponent {
 
          Level level = this.getLevel();
          LongSet longset = (LongSet)(level instanceof ServerLevel ? ((ServerLevel)level).getForcedChunks() : LongSets.EMPTY_SET);
-         List<String> list = Lists.newArrayList("Minecraft " + SharedConstants.getCurrentVersion().getName() + " (" + this.minecraft.getLaunchedVersion() + "/" + ClientBrandRetriever.getClientModName() + ("release".equalsIgnoreCase(this.minecraft.getVersionType()) ? "" : "/" + this.minecraft.getVersionType()) + ")", this.minecraft.fpsString, s, this.minecraft.levelRenderer.getChunkStatistics(), this.minecraft.levelRenderer.getEntityStatistics(), "P: " + this.minecraft.particleEngine.countParticles() + ". T: " + this.minecraft.level.getEntityCount(), this.minecraft.level.gatherChunkSourceStats());
+         List<String> list = Lists.newArrayList("Minecraft " + SharedConstants.getCurrentVersion().getName() + " (" + this.minecraft.getLaunchedVersion() + "/" + ClientBrandRetriever.getClientModName() + ("release".equalsIgnoreCase(this.minecraft.getVersionType()) ? "" : "/" + this.minecraft.getVersionType()) + ")", this.minecraft.fpsString, s, this.minecraft.levelRenderer.getChunkStatistics(), this.minecraft.levelRenderer.getEntityStatistics(), "P: " + this.minecraft.particleEngine.countParticles() + ". T: " + this.minecraft.world.getEntityCount(), this.minecraft.world.gatherChunkSourceStats());
          String s2 = this.getServerChunkStats();
          if (s2 != null) {
             list.add(s2);
          }
 
-         list.add(this.minecraft.level.dimension().location() + " FC: " + longset.size());
+         list.add(this.minecraft.world.dimension().location() + " FC: " + longset.size());
          list.add("");
          list.add(String.format(Locale.ROOT, "XYZ: %.3f / %.5f / %.3f", this.minecraft.getCameraEntity().getX(), this.minecraft.getCameraEntity().getY(), this.minecraft.getCameraEntity().getZ()));
          list.add(String.format(Locale.ROOT, "Block: %d %d %d [%d %d %d]", blockpos.getX(), blockpos.getY(), blockpos.getZ(), blockpos.getX() & 15, blockpos.getY() & 15, blockpos.getZ() & 15));
@@ -229,9 +229,9 @@ public class DebugScreenOverlay extends GuiComponent {
          if (levelchunk.isEmpty()) {
             list.add("Waiting for chunk...");
          } else {
-            int i = this.minecraft.level.getChunkSource().getLightEngine().getRawBrightness(blockpos, 0);
-            int j = this.minecraft.level.getBrightness(LightLayer.SKY, blockpos);
-            int k = this.minecraft.level.getBrightness(LightLayer.BLOCK, blockpos);
+            int i = this.minecraft.world.getChunkSource().getLightEngine().getRawBrightness(blockpos, 0);
+            int j = this.minecraft.world.getBrightness(LightLayer.SKY, blockpos);
+            int k = this.minecraft.world.getBrightness(LightLayer.BLOCK, blockpos);
             list.add("Client Light: " + i + " (" + j + " sky, " + k + " block)");
             LevelChunk levelchunk1 = this.getServerChunk();
             StringBuilder stringbuilder = new StringBuilder("CH");
@@ -258,8 +258,8 @@ public class DebugScreenOverlay extends GuiComponent {
             }
 
             list.add(stringbuilder.toString());
-            if (blockpos.getY() >= this.minecraft.level.getMinBuildHeight() && blockpos.getY() < this.minecraft.level.getMaxBuildHeight()) {
-               list.add("Biome: " + printBiome(this.minecraft.level.getBiome(blockpos)));
+            if (blockpos.getY() >= this.minecraft.world.getMinBuildHeight() && blockpos.getY() < this.minecraft.world.getMaxBuildHeight()) {
+               list.add("Biome: " + printBiome(this.minecraft.world.getBiome(blockpos)));
                long l = 0L;
                float f2 = 0.0F;
                if (levelchunk1 != null) {
@@ -268,7 +268,7 @@ public class DebugScreenOverlay extends GuiComponent {
                }
 
                DifficultyInstance difficultyinstance = new DifficultyInstance(level.getDifficulty(), level.getDayTime(), l, f2);
-               list.add(String.format(Locale.ROOT, "Local Difficulty: %.2f // %.2f (Day %d)", difficultyinstance.getEffectiveDifficulty(), difficultyinstance.getSpecialMultiplier(), this.minecraft.level.getDayTime() / 24000L));
+               list.add(String.format(Locale.ROOT, "Local Difficulty: %.2f // %.2f (Day %d)", difficultyinstance.getEffectiveDifficulty(), difficultyinstance.getSpecialMultiplier(), this.minecraft.world.getDayTime() / 24000L));
             }
 
             if (levelchunk1 != null && levelchunk1.isOldNoiseGeneration()) {
@@ -318,7 +318,7 @@ public class DebugScreenOverlay extends GuiComponent {
    @Nullable
    private ServerLevel getServerLevel() {
       IntegratedServer integratedserver = this.minecraft.getSingleplayerServer();
-      return integratedserver != null ? integratedserver.getLevel(this.minecraft.level.dimension()) : null;
+      return integratedserver != null ? integratedserver.getLevel(this.minecraft.world.dimension()) : null;
    }
 
    @Nullable
@@ -329,8 +329,8 @@ public class DebugScreenOverlay extends GuiComponent {
 
    private Level getLevel() {
       return DataFixUtils.orElse(Optional.ofNullable(this.minecraft.getSingleplayerServer()).flatMap((p_269612_) -> {
-         return Optional.ofNullable(p_269612_.getLevel(this.minecraft.level.dimension()));
-      }), this.minecraft.level);
+         return Optional.ofNullable(p_269612_.getLevel(this.minecraft.world.dimension()));
+      }), this.minecraft.world);
    }
 
    @Nullable
@@ -357,7 +357,7 @@ public class DebugScreenOverlay extends GuiComponent {
 
    private LevelChunk getClientChunk() {
       if (this.clientChunk == null) {
-         this.clientChunk = this.minecraft.level.getChunk(this.lastPos.x, this.lastPos.z);
+         this.clientChunk = this.minecraft.world.getChunk(this.lastPos.x, this.lastPos.z);
       }
 
       return this.clientChunk;
@@ -374,7 +374,7 @@ public class DebugScreenOverlay extends GuiComponent {
       } else {
          if (this.block.getType() == HitResult.Type.BLOCK) {
             BlockPos blockpos = ((BlockHitResult)this.block).getBlockPos();
-            BlockState blockstate = this.minecraft.level.getBlockState(blockpos);
+            BlockState blockstate = this.minecraft.world.getBlockState(blockpos);
             list.add("");
             list.add(ChatFormatting.UNDERLINE + "Targeted Block: " + blockpos.getX() + ", " + blockpos.getY() + ", " + blockpos.getZ());
             list.add(String.valueOf((Object)BuiltInRegistries.BLOCK.getKey(blockstate.getBlock())));
@@ -390,7 +390,7 @@ public class DebugScreenOverlay extends GuiComponent {
 
          if (this.liquid.getType() == HitResult.Type.BLOCK) {
             BlockPos blockpos1 = ((BlockHitResult)this.liquid).getBlockPos();
-            FluidState fluidstate = this.minecraft.level.getFluidState(blockpos1);
+            FluidState fluidstate = this.minecraft.world.getFluidState(blockpos1);
             list.add("");
             list.add(ChatFormatting.UNDERLINE + "Targeted Fluid: " + blockpos1.getX() + ", " + blockpos1.getY() + ", " + blockpos1.getZ());
             list.add(String.valueOf((Object)BuiltInRegistries.FLUID.getKey(fluidstate.getType())));

@@ -265,10 +265,10 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
    }
 
    private void renderSnowAndRain(LightTexture p_109704_, float p_109705_, double p_109706_, double p_109707_, double p_109708_) {
-      float f = this.minecraft.level.getRainLevel(p_109705_);
+      float f = this.minecraft.world.getRainLevel(p_109705_);
       if (!(f <= 0.0F)) {
          p_109704_.turnOnLightLayer();
-         Level level = this.minecraft.level;
+         Level level = this.minecraft.world;
          int i = Mth.floor(p_109706_);
          int j = Mth.floor(p_109707_);
          int k = Mth.floor(p_109708_);
@@ -384,10 +384,10 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
    }
 
    public void tickRain(Camera p_109694_) {
-      float f = this.minecraft.level.getRainLevel(1.0F) / (Minecraft.useFancyGraphics() ? 1.0F : 2.0F);
+      float f = this.minecraft.world.getRainLevel(1.0F) / (Minecraft.useFancyGraphics() ? 1.0F : 2.0F);
       if (!(f <= 0.0F)) {
          RandomSource randomsource = RandomSource.create((long)this.ticks * 312987231L);
-         LevelReader levelreader = this.minecraft.level;
+         LevelReader levelreader = this.minecraft.world;
          BlockPos blockpos = BlockPos.containing(p_109694_.getPosition());
          BlockPos blockpos1 = null;
          int i = (int)(100.0F * f * f) / (this.minecraft.options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
@@ -413,7 +413,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
                   double d3 = (double)fluidstate.getHeight(levelreader, blockpos1);
                   double d4 = Math.max(d2, d3);
                   ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
-                  this.minecraft.level.addParticle(particleoptions, (double)blockpos1.getX() + d0, (double)blockpos1.getY() + d4, (double)blockpos1.getZ() + d1, 0.0D, 0.0D, 0.0D);
+                  this.minecraft.world.addParticle(particleoptions, (double)blockpos1.getX() + d0, (double)blockpos1.getY() + d4, (double)blockpos1.getZ() + d1, 0.0D, 0.0D, 0.0D);
                }
             }
          }
@@ -421,9 +421,9 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
          if (blockpos1 != null && randomsource.nextInt(3) < this.rainSoundTime++) {
             this.rainSoundTime = 0;
             if (blockpos1.getY() > blockpos.getY() + 1 && levelreader.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos).getY() > Mth.floor((float)blockpos.getY())) {
-               this.minecraft.level.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
+               this.minecraft.world.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
             } else {
-               this.minecraft.level.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);
+               this.minecraft.world.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);
             }
          }
 
@@ -1139,11 +1139,11 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       }
 
       profilerfiller.popPush("clear");
-      FogRenderer.setupColor(p_109604_, p_109601_, this.minecraft.level, this.minecraft.options.getEffectiveRenderDistance(), p_109605_.getDarkenWorldAmount(p_109601_));
+      FogRenderer.setupColor(p_109604_, p_109601_, this.minecraft.world, this.minecraft.options.getEffectiveRenderDistance(), p_109605_.getDarkenWorldAmount(p_109601_));
       FogRenderer.levelFogColor();
       RenderSystem.clear(16640, Minecraft.ON_OSX);
       float f = p_109605_.getRenderDistance();
-      boolean flag2 = this.minecraft.level.effects().isFoggyAt(Mth.floor(d0), Mth.floor(d1)) || this.minecraft.gui.getBossOverlay().shouldCreateWorldFog();
+      boolean flag2 = this.minecraft.world.effects().isFoggyAt(Mth.floor(d0), Mth.floor(d1)) || this.minecraft.gui.getBossOverlay().shouldCreateWorldFog();
       profilerfiller.popPush("sky");
       RenderSystem.setShader(GameRenderer::getPositionShader);
       this.renderSky(p_109600_, p_254120_, p_109601_, p_109604_, flag2, () -> {
@@ -1744,9 +1744,9 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       if (!p_202428_) {
          FogType fogtype = p_202427_.getFluidInCamera();
          if (fogtype != FogType.POWDER_SNOW && fogtype != FogType.LAVA && !this.doesMobEffectBlockSky(p_202427_)) {
-            if (this.minecraft.level.effects().skyType() == DimensionSpecialEffects.SkyType.END) {
+            if (this.minecraft.world.effects().skyType() == DimensionSpecialEffects.SkyType.END) {
                this.renderEndSky(p_202424_);
-            } else if (this.minecraft.level.effects().skyType() == DimensionSpecialEffects.SkyType.NORMAL) {
+            } else if (this.minecraft.world.effects().skyType() == DimensionSpecialEffects.SkyType.NORMAL) {
                Vec3 vec3 = this.level.getSkyColor(this.minecraft.gameRenderer.getMainCamera().getPosition(), p_202426_);
                float f = (float)vec3.x;
                float f1 = (float)vec3.y;

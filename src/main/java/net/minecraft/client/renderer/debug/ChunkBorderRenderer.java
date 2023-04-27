@@ -24,8 +24,8 @@ public class ChunkBorderRenderer implements DebugRenderer.SimpleDebugRenderer {
 
    public void render(PoseStack p_113358_, MultiBufferSource p_113359_, double p_113360_, double p_113361_, double p_113362_) {
       Entity entity = this.minecraft.gameRenderer.getMainCamera().getEntity();
-      float f = (float)((double)this.minecraft.level.getMinBuildHeight() - p_113361_);
-      float f1 = (float)((double)this.minecraft.level.getMaxBuildHeight() - p_113361_);
+      float f = (float)((double)this.minecraft.world.getMinBuildHeight() - p_113361_);
+      float f1 = (float)((double)this.minecraft.world.getMaxBuildHeight() - p_113361_);
       ChunkPos chunkpos = entity.chunkPosition();
       float f2 = (float)((double)chunkpos.getMinBlockX() - p_113360_);
       float f3 = (float)((double)chunkpos.getMinBlockZ() - p_113362_);
@@ -65,7 +65,7 @@ public class ChunkBorderRenderer implements DebugRenderer.SimpleDebugRenderer {
          vertexconsumer.vertex(matrix4f, f2 + 16.0F, f1, f3 + (float)i1).color(1.0F, 1.0F, 0.0F, 0.0F).endVertex();
       }
 
-      for(int j1 = this.minecraft.level.getMinBuildHeight(); j1 <= this.minecraft.level.getMaxBuildHeight(); j1 += 2) {
+      for(int j1 = this.minecraft.world.getMinBuildHeight(); j1 <= this.minecraft.world.getMaxBuildHeight(); j1 += 2) {
          float f4 = (float)((double)j1 - p_113361_);
          int k = j1 % 8 == 0 ? CELL_BORDER : YELLOW;
          vertexconsumer.vertex(matrix4f, f2, f4, f3).color(1.0F, 1.0F, 0.0F, 0.0F).endVertex();
@@ -88,7 +88,7 @@ public class ChunkBorderRenderer implements DebugRenderer.SimpleDebugRenderer {
          }
       }
 
-      for(int l1 = this.minecraft.level.getMinBuildHeight(); l1 <= this.minecraft.level.getMaxBuildHeight(); l1 += 16) {
+      for(int l1 = this.minecraft.world.getMinBuildHeight(); l1 <= this.minecraft.world.getMaxBuildHeight(); l1 += 16) {
          float f5 = (float)((double)l1 - p_113361_);
          vertexconsumer.vertex(matrix4f, f2, f5, f3).color(0.25F, 0.25F, 1.0F, 0.0F).endVertex();
          vertexconsumer.vertex(matrix4f, f2, f5, f3).color(0.25F, 0.25F, 1.0F, 1.0F).endVertex();

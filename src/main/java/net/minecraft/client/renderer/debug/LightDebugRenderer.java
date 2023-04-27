@@ -23,7 +23,7 @@ public class LightDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
    }
 
    public void render(PoseStack p_113587_, MultiBufferSource p_113588_, double p_113589_, double p_113590_, double p_113591_) {
-      Level level = this.minecraft.level;
+      Level level = this.minecraft.world;
       BlockPos blockpos = BlockPos.containing(p_113589_, p_113590_, p_113591_);
       LongSet longset = new LongOpenHashSet();
 

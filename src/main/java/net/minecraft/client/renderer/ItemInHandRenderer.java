@@ -201,7 +201,7 @@ public class ItemInHandRenderer {
       p_109367_.translate(-0.5F, -0.5F, 0.0F);
       p_109367_.scale(0.0078125F, 0.0078125F, 0.0078125F);
       Integer integer = MapItem.getMapId(p_109370_);
-      MapItemSavedData mapitemsaveddata = MapItem.getSavedData(integer, this.minecraft.level);
+      MapItemSavedData mapitemsaveddata = MapItem.getSavedData(integer, this.minecraft.world);
       VertexConsumer vertexconsumer = p_109368_.getBuffer(mapitemsaveddata == null ? MAP_BACKGROUND : MAP_BACKGROUND_CHECKERBOARD);
       Matrix4f matrix4f = p_109367_.last().pose();
       vertexconsumer.vertex(matrix4f, -7.0F, 135.0F, 0.0F).color(255, 255, 255, 255).uv(0.0F, 1.0F).uv2(p_109369_).endVertex();

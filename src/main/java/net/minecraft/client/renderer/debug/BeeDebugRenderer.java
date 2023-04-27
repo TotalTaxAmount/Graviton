@@ -92,12 +92,12 @@ public class BeeDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 
    private void clearRemovedBees() {
       this.beeInfosPerEntity.entrySet().removeIf((p_113132_) -> {
-         return this.minecraft.level.getEntity((p_113132_.getValue()).id) == null;
+         return this.minecraft.world.getEntity((p_113132_.getValue()).id) == null;
       });
    }
 
    private void clearRemovedHives() {
-      long i = this.minecraft.level.getGameTime() - 20L;
+      long i = this.minecraft.world.getGameTime() - 20L;
       this.hives.entrySet().removeIf((p_113057_) -> {
          return (p_113057_.getValue()).lastSeen < i;
       });

@@ -465,7 +465,7 @@ public abstract class Screen extends AbstractContainerEventHandler implements Re
    }
 
    public void renderBackground(PoseStack p_96557_) {
-      if (this.minecraft.level != null) {
+      if (this.minecraft.world != null) {
          fillGradient(p_96557_, 0, 0, this.width, this.height, -1072689136, -804253680);
       } else {
          this.renderDirtBackground(p_96557_);

@@ -8,7 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ModuleManager {
 
-    private List<Module> modules = new CopyOnWriteArrayList<>();
+    private final List<Module> modules = new CopyOnWriteArrayList<>();
 
     public void init() {
         new Reflections("dev.totaltax.graviton.module.impl").getSubTypesOf(Module.class).forEach(m -> {

@@ -28,7 +28,7 @@ public class HeightMapRenderer implements DebugRenderer.SimpleDebugRenderer {
    }
 
    public void render(PoseStack p_113576_, MultiBufferSource p_113577_, double p_113578_, double p_113579_, double p_113580_) {
-      LevelAccessor levelaccessor = this.minecraft.level;
+      LevelAccessor levelaccessor = this.minecraft.world;
       VertexConsumer vertexconsumer = p_113577_.getBuffer(RenderType.debugFilledBox());
       BlockPos blockpos = BlockPos.containing(p_113578_, 0.0D, p_113580_);
 

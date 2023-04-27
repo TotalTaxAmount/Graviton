@@ -104,10 +104,10 @@ public class MultiPlayerGameMode {
    }
 
    public boolean destroyBlock(BlockPos p_105268_) {
-      if (this.minecraft.player.blockActionRestricted(this.minecraft.level, p_105268_, this.localPlayerMode)) {
+      if (this.minecraft.player.blockActionRestricted(this.minecraft.world, p_105268_, this.localPlayerMode)) {
          return false;
       } else {
-         Level level = this.minecraft.level;
+         Level level = this.minecraft.world;
          BlockState blockstate = level.getBlockState(p_105268_);
          if (!this.minecraft.player.getMainHandItem().getItem().canAttackBlock(blockstate, level, p_105268_, this.minecraft.player)) {
             return false;
@@ -132,15 +132,15 @@ public class MultiPlayerGameMode {
    }
 
    public boolean startDestroyBlock(BlockPos p_105270_, Direction p_105271_) {
-      if (this.minecraft.player.blockActionRestricted(this.minecraft.level, p_105270_, this.localPlayerMode)) {
+      if (this.minecraft.player.blockActionRestricted(this.minecraft.world, p_105270_, this.localPlayerMode)) {
          return false;
-      } else if (!this.minecraft.level.getWorldBorder().isWithinBounds(p_105270_)) {
+      } else if (!this.minecraft.world.getWorldBorder().isWithinBounds(p_105270_)) {
          return false;
       } else {
          if (this.localPlayerMode.isCreative()) {
-            BlockState blockstate = this.minecraft.level.getBlockState(p_105270_);
-            this.minecraft.getTutorial().onDestroyBlock(this.minecraft.level, p_105270_, blockstate, 1.0F);
-            this.startPrediction(this.minecraft.level, (p_233757_) -> {
+            BlockState blockstate = this.minecraft.world.getBlockState(p_105270_);
+            this.minecraft.getTutorial().onDestroyBlock(this.minecraft.world, p_105270_, blockstate, 1.0F);
+            this.startPrediction(this.minecraft.world, (p_233757_) -> {
                this.destroyBlock(p_105270_);
                return new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK, p_105270_, p_105271_, p_233757_);
             });
@@ -150,12 +150,12 @@ public class MultiPlayerGameMode {
                this.connection.send(new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.ABORT_DESTROY_BLOCK, this.destroyBlockPos, p_105271_));
             }
 
-            BlockState blockstate1 = this.minecraft.level.getBlockState(p_105270_);
-            this.minecraft.getTutorial().onDestroyBlock(this.minecraft.level, p_105270_, blockstate1, 0.0F);
-            this.startPrediction(this.minecraft.level, (p_233728_) -> {
+            BlockState blockstate1 = this.minecraft.world.getBlockState(p_105270_);
+            this.minecraft.getTutorial().onDestroyBlock(this.minecraft.world, p_105270_, blockstate1, 0.0F);
+            this.startPrediction(this.minecraft.world, (p_233728_) -> {
                boolean flag = !blockstate1.isAir();
                if (flag && this.destroyProgress == 0.0F) {
-                  blockstate1.attack(this.minecraft.level, p_105270_, this.minecraft.player);
+                  blockstate1.attack(this.minecraft.world, p_105270_, this.minecraft.player);
                }
 
                if (flag && blockstate1.getDestroyProgress(this.minecraft.player, this.minecraft.player.level, p_105270_) >= 1.0F) {
@@ -166,7 +166,7 @@ public class MultiPlayerGameMode {
                   this.destroyingItem = this.minecraft.player.getMainHandItem();
                   this.destroyProgress = 0.0F;
                   this.destroyTicks = 0.0F;
-                  this.minecraft.level.destroyBlockProgress(this.minecraft.player.getId(), this.destroyBlockPos, (int)(this.destroyProgress * 10.0F) - 1);
+                  this.minecraft.world.destroyBlockProgress(this.minecraft.player.getId(), this.destroyBlockPos, (int)(this.destroyProgress * 10.0F) - 1);
                }
 
                return new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK, p_105270_, p_105271_, p_233728_);
@@ -179,12 +179,12 @@ public class MultiPlayerGameMode {
 
    public void stopDestroyBlock() {
       if (this.isDestroying) {
-         BlockState blockstate = this.minecraft.level.getBlockState(this.destroyBlockPos);
-         this.minecraft.getTutorial().onDestroyBlock(this.minecraft.level, this.destroyBlockPos, blockstate, -1.0F);
+         BlockState blockstate = this.minecraft.world.getBlockState(this.destroyBlockPos);
+         this.minecraft.getTutorial().onDestroyBlock(this.minecraft.world, this.destroyBlockPos, blockstate, -1.0F);
          this.connection.send(new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.ABORT_DESTROY_BLOCK, this.destroyBlockPos, Direction.DOWN));
          this.isDestroying = false;
          this.destroyProgress = 0.0F;
-         this.minecraft.level.destroyBlockProgress(this.minecraft.player.getId(), this.destroyBlockPos, -1);
+         this.minecraft.world.destroyBlockProgress(this.minecraft.player.getId(), this.destroyBlockPos, -1);
          this.minecraft.player.resetAttackStrengthTicker();
       }
 
@@ -195,17 +195,17 @@ public class MultiPlayerGameMode {
       if (this.destroyDelay > 0) {
          --this.destroyDelay;
          return true;
-      } else if (this.localPlayerMode.isCreative() && this.minecraft.level.getWorldBorder().isWithinBounds(p_105284_)) {
+      } else if (this.localPlayerMode.isCreative() && this.minecraft.world.getWorldBorder().isWithinBounds(p_105284_)) {
          this.destroyDelay = 5;
-         BlockState blockstate1 = this.minecraft.level.getBlockState(p_105284_);
-         this.minecraft.getTutorial().onDestroyBlock(this.minecraft.level, p_105284_, blockstate1, 1.0F);
-         this.startPrediction(this.minecraft.level, (p_233753_) -> {
+         BlockState blockstate1 = this.minecraft.world.getBlockState(p_105284_);
+         this.minecraft.getTutorial().onDestroyBlock(this.minecraft.world, p_105284_, blockstate1, 1.0F);
+         this.startPrediction(this.minecraft.world, (p_233753_) -> {
             this.destroyBlock(p_105284_);
             return new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK, p_105284_, p_105285_, p_233753_);
          });
          return true;
       } else if (this.sameDestroyTarget(p_105284_)) {
-         BlockState blockstate = this.minecraft.level.getBlockState(p_105284_);
+         BlockState blockstate = this.minecraft.world.getBlockState(p_105284_);
          if (blockstate.isAir()) {
             this.isDestroying = false;
             return false;
@@ -217,10 +217,10 @@ public class MultiPlayerGameMode {
             }
 
             ++this.destroyTicks;
-            this.minecraft.getTutorial().onDestroyBlock(this.minecraft.level, p_105284_, blockstate, Mth.clamp(this.destroyProgress, 0.0F, 1.0F));
+            this.minecraft.getTutorial().onDestroyBlock(this.minecraft.world, p_105284_, blockstate, Mth.clamp(this.destroyProgress, 0.0F, 1.0F));
             if (this.destroyProgress >= 1.0F) {
                this.isDestroying = false;
-               this.startPrediction(this.minecraft.level, (p_233739_) -> {
+               this.startPrediction(this.minecraft.world, (p_233739_) -> {
                   this.destroyBlock(p_105284_);
                   return new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.STOP_DESTROY_BLOCK, p_105284_, p_105285_, p_233739_);
                });
@@ -229,7 +229,7 @@ public class MultiPlayerGameMode {
                this.destroyDelay = 5;
             }
 
-            this.minecraft.level.destroyBlockProgress(this.minecraft.player.getId(), this.destroyBlockPos, (int)(this.destroyProgress * 10.0F) - 1);
+            this.minecraft.world.destroyBlockProgress(this.minecraft.player.getId(), this.destroyBlockPos, (int)(this.destroyProgress * 10.0F) - 1);
             return true;
          }
       } else {
@@ -281,11 +281,11 @@ public class MultiPlayerGameMode {
 
    public InteractionResult useItemOn(LocalPlayer p_233733_, InteractionHand p_233734_, BlockHitResult p_233735_) {
       this.ensureHasSentCarriedItem();
-      if (!this.minecraft.level.getWorldBorder().isWithinBounds(p_233735_.getBlockPos())) {
+      if (!this.minecraft.world.getWorldBorder().isWithinBounds(p_233735_.getBlockPos())) {
          return InteractionResult.FAIL;
       } else {
          MutableObject<InteractionResult> mutableobject = new MutableObject<>();
-         this.startPrediction(this.minecraft.level, (p_233745_) -> {
+         this.startPrediction(this.minecraft.world, (p_233745_) -> {
             mutableobject.setValue(this.performUseItemOn(p_233733_, p_233734_, p_233735_));
             return new ServerboundUseItemOnPacket(p_233734_, p_233735_, p_233745_);
          });
@@ -302,12 +302,12 @@ public class MultiPlayerGameMode {
          boolean flag = !p_233747_.getMainHandItem().isEmpty() || !p_233747_.getOffhandItem().isEmpty();
          boolean flag1 = p_233747_.isSecondaryUseActive() && flag;
          if (!flag1) {
-            BlockState blockstate = this.minecraft.level.getBlockState(blockpos);
+            BlockState blockstate = this.minecraft.world.getBlockState(blockpos);
             if (!this.connection.isFeatureEnabled(blockstate.getBlock().requiredFeatures())) {
                return InteractionResult.FAIL;
             }
 
-            InteractionResult interactionresult = blockstate.use(this.minecraft.level, p_233747_, p_233748_, p_233749_);
+            InteractionResult interactionresult = blockstate.use(this.minecraft.world, p_233747_, p_233748_, p_233749_);
             if (interactionresult.consumesAction()) {
                return interactionresult;
             }
@@ -338,14 +338,14 @@ public class MultiPlayerGameMode {
          this.ensureHasSentCarriedItem();
          this.connection.send(new ServerboundMovePlayerPacket.PosRot(p_233722_.getX(), p_233722_.getY(), p_233722_.getZ(), p_233722_.getYRot(), p_233722_.getXRot(), p_233722_.isOnGround()));
          MutableObject<InteractionResult> mutableobject = new MutableObject<>();
-         this.startPrediction(this.minecraft.level, (p_233720_) -> {
+         this.startPrediction(this.minecraft.world, (p_233720_) -> {
             ServerboundUseItemPacket serverbounduseitempacket = new ServerboundUseItemPacket(p_233723_, p_233720_);
             ItemStack itemstack = p_233722_.getItemInHand(p_233723_);
             if (p_233722_.getCooldowns().isOnCooldown(itemstack.getItem())) {
                mutableobject.setValue(InteractionResult.PASS);
                return serverbounduseitempacket;
             } else {
-               InteractionResultHolder<ItemStack> interactionresultholder = itemstack.use(this.minecraft.level, p_233722_, p_233723_);
+               InteractionResultHolder<ItemStack> interactionresultholder = itemstack.use(this.minecraft.world, p_233722_, p_233723_);
                ItemStack itemstack1 = interactionresultholder.getObject();
                if (itemstack1 != itemstack) {
                   p_233722_.setItemInHand(p_233723_, itemstack1);

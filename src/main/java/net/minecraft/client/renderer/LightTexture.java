@@ -86,7 +86,7 @@ public class LightTexture implements AutoCloseable {
       if (this.updateLightTexture) {
          this.updateLightTexture = false;
          this.minecraft.getProfiler().push("lightTex");
-         ClientLevel clientlevel = this.minecraft.level;
+         ClientLevel clientlevel = this.minecraft.world;
          if (clientlevel != null) {
             float f = clientlevel.getSkyDarken(1.0F);
             float f1;

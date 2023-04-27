@@ -116,7 +116,7 @@ public class PlayerInfo {
 
    @Nullable
    public PlayerTeam getTeam() {
-      return Minecraft.getInstance().level.getScoreboard().getPlayersTeam(this.getProfile().getName());
+      return Minecraft.getInstance().world.getScoreboard().getPlayersTeam(this.getProfile().getName());
    }
 
    protected void registerTextures() {

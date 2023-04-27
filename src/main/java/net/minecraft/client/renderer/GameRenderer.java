@@ -669,7 +669,7 @@ public class GameRenderer implements AutoCloseable {
    public void pick(float p_109088_) {
       Entity entity = this.minecraft.getCameraEntity();
       if (entity != null) {
-         if (this.minecraft.level != null) {
+         if (this.minecraft.world != null) {
             this.minecraft.getProfiler().push("pick");
             this.minecraft.crosshairPickEntity = null;
             double d0 = (double)this.minecraft.gameMode.getPickRange();
@@ -877,7 +877,7 @@ public class GameRenderer implements AutoCloseable {
          int i = (int)(this.minecraft.mouseHandler.xpos() * (double)this.minecraft.getWindow().getGuiScaledWidth() / (double)this.minecraft.getWindow().getScreenWidth());
          int j = (int)(this.minecraft.mouseHandler.ypos() * (double)this.minecraft.getWindow().getGuiScaledHeight() / (double)this.minecraft.getWindow().getScreenHeight());
          RenderSystem.viewport(0, 0, this.minecraft.getWindow().getWidth(), this.minecraft.getWindow().getHeight());
-         if (p_109096_ && this.minecraft.level != null) {
+         if (p_109096_ && this.minecraft.world != null) {
             this.minecraft.getProfiler().push("level");
             this.renderLevel(p_109094_, p_109095_, new PoseStack());
             this.tryTakeScreenshotIfNeeded();
@@ -903,7 +903,7 @@ public class GameRenderer implements AutoCloseable {
          RenderSystem.applyModelViewMatrix();
          Lighting.setupFor3DItems();
          PoseStack posestack1 = new PoseStack();
-         if (p_109096_ && this.minecraft.level != null) {
+         if (p_109096_ && this.minecraft.world != null) {
             this.minecraft.getProfiler().popPush("gui");
             if (this.minecraft.player != null) {
                float f = Mth.lerp(p_109094_, this.minecraft.player.oPortalTime, this.minecraft.player.portalTime);
@@ -1034,12 +1034,12 @@ public class GameRenderer implements AutoCloseable {
             HitResult hitresult = this.minecraft.hitResult;
             if (hitresult != null && hitresult.getType() == HitResult.Type.BLOCK) {
                BlockPos blockpos = ((BlockHitResult)hitresult).getBlockPos();
-               BlockState blockstate = this.minecraft.level.getBlockState(blockpos);
+               BlockState blockstate = this.minecraft.world.getBlockState(blockpos);
                if (this.minecraft.gameMode.getPlayerMode() == GameType.SPECTATOR) {
-                  flag = blockstate.getMenuProvider(this.minecraft.level, blockpos) != null;
+                  flag = blockstate.getMenuProvider(this.minecraft.world, blockpos) != null;
                } else {
-                  BlockInWorld blockinworld = new BlockInWorld(this.minecraft.level, blockpos, false);
-                  Registry<Block> registry = this.minecraft.level.registryAccess().registryOrThrow(Registries.BLOCK);
+                  BlockInWorld blockinworld = new BlockInWorld(this.minecraft.world, blockpos, false);
+                  Registry<Block> registry = this.minecraft.world.registryAccess().registryOrThrow(Registries.BLOCK);
                   flag = !itemstack.isEmpty() && (itemstack.hasAdventureModeBreakTagForBlock(registry, blockinworld) || itemstack.hasAdventureModePlaceTagForBlock(registry, blockinworld));
                }
             }
@@ -1084,7 +1084,7 @@ public class GameRenderer implements AutoCloseable {
 
       Matrix4f matrix4f = posestack.last().pose();
       this.resetProjectionMatrix(matrix4f);
-      camera.setup(this.minecraft.level, (Entity)(this.minecraft.getCameraEntity() == null ? this.minecraft.player : this.minecraft.getCameraEntity()), !this.minecraft.options.getCameraType().isFirstPerson(), this.minecraft.options.getCameraType().isMirrored(), p_109090_);
+      camera.setup(this.minecraft.world, (Entity)(this.minecraft.getCameraEntity() == null ? this.minecraft.player : this.minecraft.getCameraEntity()), !this.minecraft.options.getCameraType().isFirstPerson(), this.minecraft.options.getCameraType().isMirrored(), p_109090_);
       p_109092_.mulPose(Axis.XP.rotationDegrees(camera.getXRot()));
       p_109092_.mulPose(Axis.YP.rotationDegrees(camera.getYRot() + 180.0F));
       Matrix3f matrix3f = (new Matrix3f(p_109092_.last().normal())).invert();
@@ -1139,7 +1139,7 @@ public class GameRenderer implements AutoCloseable {
          posestack.mulPose(Axis.XP.rotationDegrees(6.0F * Mth.cos(f * 8.0F)));
          posestack.mulPose(Axis.ZP.rotationDegrees(6.0F * Mth.cos(f * 8.0F)));
          MultiBufferSource.BufferSource multibuffersource$buffersource = this.renderBuffers.bufferSource();
-         this.minecraft.getItemRenderer().renderStatic(this.itemActivationItem, ItemDisplayContext.FIXED, 15728880, OverlayTexture.NO_OVERLAY, posestack, multibuffersource$buffersource, this.minecraft.level, 0);
+         this.minecraft.getItemRenderer().renderStatic(this.itemActivationItem, ItemDisplayContext.FIXED, 15728880, OverlayTexture.NO_OVERLAY, posestack, multibuffersource$buffersource, this.minecraft.world, 0);
          posestack.popPose();
          multibuffersource$buffersource.endBatch();
          RenderSystem.enableCull();

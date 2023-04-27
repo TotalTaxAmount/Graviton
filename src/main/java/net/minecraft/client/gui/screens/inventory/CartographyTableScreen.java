@@ -46,7 +46,7 @@ public class CartographyTableScreen extends AbstractContainerScreen<CartographyT
       MapItemSavedData mapitemsaveddata;
       if (itemstack1.is(Items.FILLED_MAP)) {
          integer = MapItem.getMapId(itemstack1);
-         mapitemsaveddata = MapItem.getSavedData(integer, this.minecraft.level);
+         mapitemsaveddata = MapItem.getSavedData(integer, this.minecraft.world);
          if (mapitemsaveddata != null) {
             if (mapitemsaveddata.locked) {
                flag3 = true;

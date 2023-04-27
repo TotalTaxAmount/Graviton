@@ -400,7 +400,7 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
       ClientLevel.ClientLevelData clientlevel$clientleveldata = new ClientLevel.ClientLevelData(Difficulty.NORMAL, p_105030_.hardcore(), flag1);
       this.levelData = clientlevel$clientleveldata;
       this.level = new ClientLevel(this, clientlevel$clientleveldata, resourcekey, holder, this.serverChunkRadius, this.serverSimulationDistance, this.minecraft::getProfiler, this.minecraft.levelRenderer, flag, p_105030_.seed());
-      this.minecraft.setLevel(this.level);
+      this.minecraft.setWorld(this.level);
       if (this.minecraft.player == null) {
          this.minecraft.player = this.minecraft.gameMode.createPlayer(this.level, new StatsCounter(), new ClientRecipeBook());
          this.minecraft.player.setYRot(-180.0F);
@@ -511,7 +511,7 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
          float f = (float)(p_104966_.getyRot() * 360) / 256.0F;
          float f1 = (float)(p_104966_.getxRot() * 360) / 256.0F;
          int i = p_104966_.getEntityId();
-         RemotePlayer remoteplayer = new RemotePlayer(this.minecraft.level, playerinfo.getProfile());
+         RemotePlayer remoteplayer = new RemotePlayer(this.minecraft.world, playerinfo.getProfile());
          remoteplayer.setId(i);
          remoteplayer.syncPacketPositionCodec(d0, d1, d2);
          remoteplayer.absMoveTo(d0, d1, d2, f, f1);
@@ -899,14 +899,14 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
 
    public void handleSetTime(ClientboundSetTimePacket p_105108_) {
       PacketUtils.ensureRunningOnSameThread(p_105108_, this, this.minecraft);
-      this.minecraft.level.setGameTime(p_105108_.getGameTime());
-      this.minecraft.level.setDayTime(p_105108_.getDayTime());
+      this.minecraft.world.setGameTime(p_105108_.getGameTime());
+      this.minecraft.world.setDayTime(p_105108_.getDayTime());
       this.telemetryManager.setTime(p_105108_.getGameTime());
    }
 
    public void handleSetSpawn(ClientboundSetDefaultSpawnPositionPacket p_105084_) {
       PacketUtils.ensureRunningOnSameThread(p_105084_, this, this.minecraft);
-      this.minecraft.level.setDefaultSpawnPos(p_105084_.getPos(), p_105084_.getAngle());
+      this.minecraft.world.setDefaultSpawnPos(p_105084_.getPos(), p_105084_.getAngle());
       Screen screen = this.minecraft.screen;
       if (screen instanceof ReceivingLevelScreen receivinglevelscreen) {
          receivinglevelscreen.loadingPacketsReceived();
@@ -1026,7 +1026,7 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
          this.level = new ClientLevel(this, clientlevel$clientleveldata, resourcekey, holder, this.serverChunkRadius, this.serverSimulationDistance, this.minecraft::getProfiler, this.minecraft.levelRenderer, flag, p_105066_.getSeed());
          this.level.setScoreboard(scoreboard);
          this.level.addMapData(map);
-         this.minecraft.setLevel(this.level);
+         this.minecraft.setWorld(this.level);
          this.minecraft.setScreen(new ReceivingLevelScreen());
       }
 
@@ -1073,7 +1073,7 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
 
    public void handleExplosion(ClientboundExplodePacket p_105012_) {
       PacketUtils.ensureRunningOnSameThread(p_105012_, this, this.minecraft);
-      Explosion explosion = new Explosion(this.minecraft.level, (Entity)null, p_105012_.getX(), p_105012_.getY(), p_105012_.getZ(), p_105012_.getPower(), p_105012_.getToBlow());
+      Explosion explosion = new Explosion(this.minecraft.world, (Entity)null, p_105012_.getX(), p_105012_.getY(), p_105012_.getZ(), p_105012_.getPower(), p_105012_.getToBlow());
       explosion.finalizeExplosion(true);
       this.minecraft.player.setDeltaMovement(this.minecraft.player.getDeltaMovement().add((double)p_105012_.getKnockbackX(), (double)p_105012_.getKnockbackY(), (double)p_105012_.getKnockbackZ()));
    }
@@ -1160,7 +1160,7 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
    public void handleBlockEntityData(ClientboundBlockEntityDataPacket p_104976_) {
       PacketUtils.ensureRunningOnSameThread(p_104976_, this, this.minecraft);
       BlockPos blockpos = p_104976_.getPos();
-      this.minecraft.level.getBlockEntity(blockpos, p_104976_.getType()).ifPresent((p_205557_) -> {
+      this.minecraft.world.getBlockEntity(blockpos, p_104976_.getType()).ifPresent((p_205557_) -> {
          CompoundTag compoundtag = p_104976_.getTag();
          if (compoundtag != null) {
             p_205557_.load(compoundtag);
@@ -1200,12 +1200,12 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
 
    public void handleBlockEvent(ClientboundBlockEventPacket p_104978_) {
       PacketUtils.ensureRunningOnSameThread(p_104978_, this, this.minecraft);
-      this.minecraft.level.blockEvent(p_104978_.getPos(), p_104978_.getBlock(), p_104978_.getB0(), p_104978_.getB1());
+      this.minecraft.world.blockEvent(p_104978_.getPos(), p_104978_.getBlock(), p_104978_.getB0(), p_104978_.getB1());
    }
 
    public void handleBlockDestruction(ClientboundBlockDestructionPacket p_104974_) {
       PacketUtils.ensureRunningOnSameThread(p_104974_, this, this.minecraft);
-      this.minecraft.level.destroyBlockProgress(p_104974_.getId(), p_104974_.getPos(), p_104974_.getProgress());
+      this.minecraft.world.destroyBlockProgress(p_104974_.getId(), p_104974_.getPos(), p_104974_.getProgress());
    }
 
    public void handleGameEvent(ClientboundGameEventPacket p_105016_) {
@@ -1271,10 +1271,10 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
       MapRenderer maprenderer = this.minecraft.gameRenderer.getMapRenderer();
       int i = p_105032_.getMapId();
       String s = MapItem.makeKey(i);
-      MapItemSavedData mapitemsaveddata = this.minecraft.level.getMapData(s);
+      MapItemSavedData mapitemsaveddata = this.minecraft.world.getMapData(s);
       if (mapitemsaveddata == null) {
-         mapitemsaveddata = MapItemSavedData.createForClient(p_105032_.getScale(), p_105032_.isLocked(), this.minecraft.level.dimension());
-         this.minecraft.level.overrideMapData(s, mapitemsaveddata);
+         mapitemsaveddata = MapItemSavedData.createForClient(p_105032_.getScale(), p_105032_.isLocked(), this.minecraft.world.dimension());
+         this.minecraft.world.overrideMapData(s, mapitemsaveddata);
       }
 
       p_105032_.applyToMap(mapitemsaveddata);
@@ -1284,9 +1284,9 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
    public void handleLevelEvent(ClientboundLevelEventPacket p_105024_) {
       PacketUtils.ensureRunningOnSameThread(p_105024_, this, this.minecraft);
       if (p_105024_.isGlobalEvent()) {
-         this.minecraft.level.globalLevelEvent(p_105024_.getType(), p_105024_.getPos(), p_105024_.getData());
+         this.minecraft.world.globalLevelEvent(p_105024_.getType(), p_105024_.getPos(), p_105024_.getData());
       } else {
-         this.minecraft.level.levelEvent(p_105024_.getType(), p_105024_.getPos(), p_105024_.getData());
+         this.minecraft.world.levelEvent(p_105024_.getType(), p_105024_.getPos(), p_105024_.getData());
       }
 
    }
@@ -1327,7 +1327,7 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
       PacketUtils.ensureRunningOnSameThread(p_105132_, this, this.minecraft);
       this.recipeManager.replaceRecipes(p_105132_.getRecipes());
       ClientRecipeBook clientrecipebook = this.minecraft.player.getRecipeBook();
-      clientrecipebook.setupCollections(this.recipeManager.getRecipes(), this.minecraft.level.registryAccess());
+      clientrecipebook.setupCollections(this.recipeManager.getRecipes(), this.minecraft.world.registryAccess());
       this.minecraft.populateSearchTree(SearchRegistry.RECIPE_COLLECTIONS, clientrecipebook.getCollections());
    }
 
@@ -1706,14 +1706,14 @@ public class ClientPacketListener implements TickablePacketListener, ClientGameP
 
    public void handleSoundEvent(ClientboundSoundPacket p_105114_) {
       PacketUtils.ensureRunningOnSameThread(p_105114_, this, this.minecraft);
-      this.minecraft.level.playSeededSound(this.minecraft.player, p_105114_.getX(), p_105114_.getY(), p_105114_.getZ(), p_105114_.getSound(), p_105114_.getSource(), p_105114_.getVolume(), p_105114_.getPitch(), p_105114_.getSeed());
+      this.minecraft.world.playSeededSound(this.minecraft.player, p_105114_.getX(), p_105114_.getY(), p_105114_.getZ(), p_105114_.getSound(), p_105114_.getSource(), p_105114_.getVolume(), p_105114_.getPitch(), p_105114_.getSeed());
    }
 
    public void handleSoundEntityEvent(ClientboundSoundEntityPacket p_105112_) {
       PacketUtils.ensureRunningOnSameThread(p_105112_, this, this.minecraft);
       Entity entity = this.level.getEntity(p_105112_.getId());
       if (entity != null) {
-         this.minecraft.level.playSeededSound(this.minecraft.player, entity, p_105112_.getSound(), p_105112_.getSource(), p_105112_.getVolume(), p_105112_.getPitch(), p_105112_.getSeed());
+         this.minecraft.world.playSeededSound(this.minecraft.player, entity, p_105112_.getSound(), p_105112_.getSource(), p_105112_.getVolume(), p_105112_.getPitch(), p_105112_.getSeed());
       }
    }
 

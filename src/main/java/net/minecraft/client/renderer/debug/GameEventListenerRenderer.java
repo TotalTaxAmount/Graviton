@@ -36,7 +36,7 @@ public class GameEventListenerRenderer implements DebugRenderer.SimpleDebugRende
    }
 
    public void render(PoseStack p_173846_, MultiBufferSource p_173847_, double p_173848_, double p_173849_, double p_173850_) {
-      Level level = this.minecraft.level;
+      Level level = this.minecraft.world;
       if (level == null) {
          this.trackedGameEvents.clear();
          this.trackedListeners.clear();

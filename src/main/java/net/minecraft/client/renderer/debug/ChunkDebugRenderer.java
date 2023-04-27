@@ -74,7 +74,7 @@ public class ChunkDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
       final CompletableFuture<Map<ChunkPos, String>> serverData;
 
       ChunkData(IntegratedServer p_113382_, double p_113383_, double p_113384_) {
-         ClientLevel clientlevel = ChunkDebugRenderer.this.minecraft.level;
+         ClientLevel clientlevel = ChunkDebugRenderer.this.minecraft.world;
          ResourceKey<Level> resourcekey = clientlevel.dimension();
          int i = SectionPos.posToSectionCoord(p_113383_);
          int j = SectionPos.posToSectionCoord(p_113384_);

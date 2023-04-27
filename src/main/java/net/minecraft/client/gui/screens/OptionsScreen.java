@@ -99,14 +99,14 @@ public class OptionsScreen extends Screen {
    }
 
    private LayoutElement createOnlineButton() {
-      if (this.minecraft.level != null && this.minecraft.hasSingleplayerServer()) {
+      if (this.minecraft.world != null && this.minecraft.hasSingleplayerServer()) {
          this.difficultyButton = createDifficultyButton(0, 0, "options.difficulty", this.minecraft);
-         if (!this.minecraft.level.getLevelData().isHardcore()) {
+         if (!this.minecraft.world.getLevelData().isHardcore()) {
             this.lockButton = new LockIconButton(0, 0, (p_193857_) -> {
-               this.minecraft.setScreen(new ConfirmScreen(this::lockCallback, Component.translatable("difficulty.lock.title"), Component.translatable("difficulty.lock.question", this.minecraft.level.getLevelData().getDifficulty().getDisplayName())));
+               this.minecraft.setScreen(new ConfirmScreen(this::lockCallback, Component.translatable("difficulty.lock.title"), Component.translatable("difficulty.lock.question", this.minecraft.world.getLevelData().getDifficulty().getDisplayName())));
             });
             this.difficultyButton.setWidth(this.difficultyButton.getWidth() - this.lockButton.getWidth());
-            this.lockButton.setLocked(this.minecraft.level.getLevelData().isDifficultyLocked());
+            this.lockButton.setLocked(this.minecraft.world.getLevelData().isDifficultyLocked());
             this.lockButton.active = !this.lockButton.isLocked();
             this.difficultyButton.active = !this.lockButton.isLocked();
             LinearLayout linearlayout = new LinearLayout(150, 0, LinearLayout.Orientation.HORIZONTAL);
@@ -125,14 +125,14 @@ public class OptionsScreen extends Screen {
    }
 
    public static CycleButton<Difficulty> createDifficultyButton(int p_262051_, int p_261805_, String p_261598_, Minecraft p_261922_) {
-      return CycleButton.builder(Difficulty::getDisplayName).withValues(Difficulty.values()).withInitialValue(p_261922_.level.getDifficulty()).create(p_262051_, p_261805_, 150, 20, Component.translatable(p_261598_), (p_193854_, p_193855_) -> {
+      return CycleButton.builder(Difficulty::getDisplayName).withValues(Difficulty.values()).withInitialValue(p_261922_.world.getDifficulty()).create(p_262051_, p_261805_, 150, 20, Component.translatable(p_261598_), (p_193854_, p_193855_) -> {
          p_261922_.getConnection().send(new ServerboundChangeDifficultyPacket(p_193855_));
       });
    }
 
    private void lockCallback(boolean p_96261_) {
       this.minecraft.setScreen(this);
-      if (p_96261_ && this.minecraft.level != null) {
+      if (p_96261_ && this.minecraft.world != null) {
          this.minecraft.getConnection().send(new ServerboundLockDifficultyPacket(true));
          this.lockButton.setLocked(true);
          this.lockButton.active = false;

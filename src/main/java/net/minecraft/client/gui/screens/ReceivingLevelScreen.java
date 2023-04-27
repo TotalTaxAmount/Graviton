@@ -43,7 +43,7 @@ public class ReceivingLevelScreen extends Screen {
             }
 
             BlockPos blockpos = this.minecraft.player.blockPosition();
-            boolean flag = this.minecraft.level != null && this.minecraft.level.isOutsideBuildHeight(blockpos.getY());
+            boolean flag = this.minecraft.world != null && this.minecraft.world.isOutsideBuildHeight(blockpos.getY());
             if (flag || this.minecraft.levelRenderer.isChunkCompiled(blockpos) || this.minecraft.player.isSpectator() || !this.minecraft.player.isAlive()) {
                this.onClose();
             }

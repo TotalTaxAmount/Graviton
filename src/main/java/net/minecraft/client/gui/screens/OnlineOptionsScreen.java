@@ -24,7 +24,7 @@ public class OnlineOptionsScreen extends SimpleOptionsSubScreen {
       List<OptionInstance<?>> list = Lists.newArrayList();
       list.add(p_261609_.realmsNotifications());
       list.add(p_261609_.allowServerListing());
-      OptionInstance<Unit> optioninstance = Optionull.map(p_262120_.level, (p_262124_) -> {
+      OptionInstance<Unit> optioninstance = Optionull.map(p_262120_.world, (p_262124_) -> {
          Difficulty difficulty = p_262124_.getDifficulty();
          return new OptionInstance<>("options.difficulty.online", OptionInstance.noTooltip(), (p_261484_, p_262113_) -> {
             return difficulty.getDisplayName();

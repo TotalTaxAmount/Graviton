@@ -53,7 +53,7 @@ public class SmithingScreen extends ItemCombinerScreen<SmithingMenu> {
    }
 
    protected void subInit() {
-      this.armorStandPreview = new ArmorStand(this.minecraft.level, 0.0D, 0.0D, 0.0D);
+      this.armorStandPreview = new ArmorStand(this.minecraft.world, 0.0D, 0.0D, 0.0D);
       this.armorStandPreview.setNoBasePlate(true);
       this.armorStandPreview.setShowArms(true);
       this.armorStandPreview.yBodyRot = 210.0F;

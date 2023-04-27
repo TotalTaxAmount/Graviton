@@ -31,7 +31,7 @@ public abstract class AbstractFurnaceRecipeBookComponent extends RecipeBookCompo
    }
 
    public void setupGhostRecipe(Recipe<?> p_100122_, List<Slot> p_100123_) {
-      ItemStack itemstack = p_100122_.getResultItem(this.minecraft.level.registryAccess());
+      ItemStack itemstack = p_100122_.getResultItem(this.minecraft.world.registryAccess());
       this.ghostRecipe.setRecipe(p_100122_);
       this.ghostRecipe.addIngredient(Ingredient.of(itemstack), (p_100123_.get(2)).x, (p_100123_.get(2)).y);
       NonNullList<Ingredient> nonnulllist = p_100122_.getIngredients();
@@ -39,7 +39,7 @@ public abstract class AbstractFurnaceRecipeBookComponent extends RecipeBookCompo
       if (slot.getItem().isEmpty()) {
          if (this.fuels == null) {
             this.fuels = Ingredient.of(this.getFuelItems().stream().filter((p_274685_) -> {
-               return p_274685_.isEnabled(this.minecraft.level.enabledFeatures());
+               return p_274685_.isEnabled(this.minecraft.world.enabledFeatures());
             }).map(ItemStack::new));
          }
 

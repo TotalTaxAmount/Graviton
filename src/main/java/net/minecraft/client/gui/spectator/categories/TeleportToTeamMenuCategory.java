@@ -32,7 +32,7 @@ public class TeleportToTeamMenuCategory implements SpectatorMenuCategory, Specta
 
    public TeleportToTeamMenuCategory() {
       Minecraft minecraft = Minecraft.getInstance();
-      this.items = createTeamEntries(minecraft, minecraft.level.getScoreboard());
+      this.items = createTeamEntries(minecraft, minecraft.world.getScoreboard());
    }
 
    private static List<SpectatorMenuItem> createTeamEntries(Minecraft p_260258_, Scoreboard p_259249_) {

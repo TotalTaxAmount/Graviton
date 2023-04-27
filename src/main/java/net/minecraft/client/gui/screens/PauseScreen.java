@@ -97,7 +97,7 @@ public class PauseScreen extends Screen {
    private void onDisconnect() {
       boolean flag = this.minecraft.isLocalServer();
       boolean flag1 = this.minecraft.isConnectedToRealms();
-      this.minecraft.level.disconnect();
+      this.minecraft.world.disconnect();
       if (flag) {
          this.minecraft.clearLevel(new GenericDirtMessageScreen(SAVING_LEVEL));
       } else {
