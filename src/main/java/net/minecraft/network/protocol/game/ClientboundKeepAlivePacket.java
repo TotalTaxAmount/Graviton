@@ -6,20 +6,20 @@ import net.minecraft.network.protocol.Packet;
 public class ClientboundKeepAlivePacket implements Packet<ClientGamePacketListener> {
    private final long id;
 
-   public ClientboundKeepAlivePacket(long p_132212_) {
-      this.id = p_132212_;
+   public ClientboundKeepAlivePacket(long id) {
+      this.id = id;
    }
 
-   public ClientboundKeepAlivePacket(FriendlyByteBuf p_178895_) {
-      this.id = p_178895_.readLong();
+   public ClientboundKeepAlivePacket(FriendlyByteBuf buf) {
+      this.id = buf.readLong();
    }
 
-   public void write(FriendlyByteBuf p_132221_) {
-      p_132221_.writeLong(this.id);
+   public void write(FriendlyByteBuf buf) {
+      buf.writeLong(this.id);
    }
 
-   public void handle(ClientGamePacketListener p_132218_) {
-      p_132218_.handleKeepAlive(this);
+   public void handle(ClientGamePacketListener gamePacketListener) {
+      gamePacketListener.handleKeepAlive(this);
    }
 
    public long getId() {
